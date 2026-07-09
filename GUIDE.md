@@ -26,14 +26,14 @@ Prima di esplorare i comandi, è fondamentale comprendere come il network gestis
 
 ```mermaid
 flowchart TD
-    Player[👤 Giocatore] -->|Connessione| Proxy[⚡ Velocity Proxy]
+    Player["👤 Giocatore"] -->|Connessione| Proxy["⚡ Velocity Proxy"]
     
     subgraph Backend Servers
-        Lobby[🏰 Lobby (AuthMe)]
-        Survival[🌲 Survival]
-        Creative[🎨 Creative]
-        Moto[🏍️ MotoLeo]
-        Medioeval[⚔️ Medioeval]
+        Lobby["🏰 Lobby (AuthMe)"]
+        Survival["🌲 Survival"]
+        Creative["🎨 Creative"]
+        Moto["🏍️ MotoLeo"]
+        Medioeval["⚔️ Medioeval"]
     end
 
     Proxy -->|Login Obbligatorio| Lobby
@@ -43,8 +43,8 @@ flowchart TD
     Lobby -->|BungeeTP / Portals| Medioeval
 
     subgraph Data Layer
-        DB[(MariaDB)]
-        Redis[(Redis)]
+        DB[("MariaDB")]
+        Redis[("Redis")]
     end
     
     Survival -.-> |Sincronizza Dati| DB
@@ -66,15 +66,15 @@ L'ingresso dei giocatori sp (Offline Mode) richiede un sistema solido per proteg
 sequenceDiagram
     participant P as Giocatore
     participant V as Velocity Proxy
-    participant L as Lobby (AuthMe)
-    participant S as Ultimo Server (es. Survival)
+    participant L as Lobby
+    participant S as Ultimo Server
     
-    P->>V: Connessione al Network (IP:25565)
+    P->>V: Connessione al Network
     V->>L: Instradamento forzato alla Lobby
-    L->>P: Richiesta Password (o Registrazione)
-    P->>L: /login <password>
-    L-->>V: Segnale "Login Success" (AuthMeVelocity)
-    V->>S: Teletrasporto automatico all'ultimo server!
+    L->>P: Richiesta Password o Registrazione
+    P->>L: /login password
+    L-->>V: Segnale Login Success
+    V->>S: Teletrasporto all'ultimo server!
 ```
 
 ### Gestione Account (AuthMe)
@@ -151,13 +151,13 @@ La chat è potenziata da **RedisChat**, garantendo una comunicazione fluida senz
 
 ```mermaid
 flowchart LR
-    Player((Giocatore))
-    Portal[Portale Fisico<br>AdvancedPortals]
-    Command[Comando Chat<br>/server o /tpa]
+    Player(("Giocatore"))
+    Portal["Portale Fisico<br>AdvancedPortals"]
+    Command["Comando Chat<br>/server o /tpa"]
     
     Player -->|Attraversa| Portal
     Player -->|Digita| Command
-    Portal -.->|BungeeTP| Destination[(Server Destinazione)]
+    Portal -.->|BungeeTP| Destination[("Server Destinazione")]
     Command -.->|BungeeTP| Destination
 ```
 
