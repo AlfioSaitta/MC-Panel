@@ -1,0 +1,30 @@
+# Configurazione Globale SentientMobs
+# ATTENZIONE: Questo file è sincronizzato tramite deploy.sh su tutti i server Paper del network
+# Garantisce un'IA omogenea su tutti i mondi.
+
+Settings:
+  # Massimizza le prestazioni limitando i calcoli asincroni
+  MaxIntelligentMobsPerWorld: 150
+  
+  # Usa ProtocolLib per scaricare il calcolo del pathfinding e vettori di schivata dal thread principale!
+  UseProtocolLib: true
+
+  # Raggio entro il quale i mob si coordinano in gruppo (Branch tattico)
+  TacticalRadius: 24.0
+
+  # Esclusioni (Blacklist): Non applicare l'IA avanzata a queste entità
+  # Cruciale per evitare conflitti con Boss stazionari di MythicMobs o NPC!
+  Blacklist:
+    Entities:
+      - WITHER
+      - ENDER_DRAGON
+      - VILLAGER
+    MythicMobs:
+      - SkeletonKing # Esclude il boss specifico (opzionale, poiché MythicMobs sovrascrive già se configurato a dovere)
+    Metadata:
+      - "NPC" # Ignora i Citizens
+
+Features:
+  Dodging: true
+  GroupTactics: true
+  AdvancedPathfinding: true

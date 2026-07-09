@@ -1,0 +1,5 @@
+debug: false
+check_updates: true
+gui_menus:
+  server_selector:
+    file: server_selector.yml

@@ -1,0 +1,51 @@
+command-block-overrides: []
+ignore-vanilla-permissions: false
+aliases:
+  ban:
+  - libertybans:ban $$1-
+  unban:
+  - libertybans:unban $$1-
+  mute:
+  - libertybans:mute $$1-
+  unmute:
+  - libertybans:unmute $$1-
+  kick:
+  - libertybans:kick $$1-
+  banip:
+  - libertybans:banip $$1-
+  unbanip:
+  - libertybans:unbanip $$1-
+  tempban:
+  - libertybans:tempban $$1-
+  tempmute:
+  - libertybans:tempmute $$1-
+  warn:
+  - libertybans:warn $$1-
+  history:
+  - libertybans:history $$1-
+  alts:
+  - libertybans:alts $$1-
+  msg:
+  - redischat:msg $1-
+  w:
+  - redischat:msg $1-
+  m:
+  - redischat:msg $1-
+  t:
+  - redischat:msg $1-
+  pm:
+  - redischat:msg $1-
+  tell:
+  - redischat:msg $1-
+  whisper:
+  - redischat:msg $1-
+  reply:
+  - redischat:reply $1-
+  r:
+  - redischat:reply $1-
+  broadcast:
+  - redischat:broadcast $1-
+  bc:
+  - redischat:broadcast $1-
+  ignore:
+  - redischat:ignore $1-

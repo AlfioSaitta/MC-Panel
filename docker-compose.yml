@@ -1,0 +1,318 @@
+services:
+  # ----------------------------------------
+  # DATABASE (MariaDB)
+  # ----------------------------------------
+  db:
+    image: mariadb:10.11
+    container_name: mc_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "minecraft"
+      MYSQL_USER: "mcuser"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+    volumes:
+      - ./db_data:/var/lib/mysql
+    networks:
+      - mc_network
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    ports:
+      - "127.0.0.1:3306:3306"
+
+  # ----------------------------------------
+  # REDIS SERVER (For Chat Sync)
+  # ----------------------------------------
+  redis:
+    image: redis:alpine
+    container_name: mc_redis
+    restart: always
+    networks:
+      - mc_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ----------------------------------------
+  # VELOCITY PROXY
+  # ----------------------------------------
+  velocity:
+    image: itzg/bungeecord:latest
+    container_name: velocity
+    restart: always
+    stdin_open: true
+    tty: true
+    environment:
+      TYPE: VELOCITY
+      VELOCITY_VERSION: LATEST
+    ports:
+      - "25565:25577"
+    healthcheck:
+      test: ["CMD-SHELL", "grep -q 'Done (' /server/logs/latest.log || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./proxy:/server
+    networks:
+      - mc_network
+
+  # ----------------------------------------
+  # LOBBY SERVER
+  # ----------------------------------------
+  lobby:
+    image: itzg/minecraft-server:latest
+    container_name: mc_lobby
+    restart: always
+    tty: true
+    stdin_open: true
+    environment:
+      EULA: "TRUE"
+      TYPE: "PAPER"
+      VERSION: "LATEST"
+      MEMORY: "2048M"
+      CREATE_CONSOLE_IN_PIPE: "true"
+      ONLINE_MODE: "false" # Deve essere false dietro un proxy!
+      SPIGOT_BUNGEECORD: "true"
+      BUNGEECORD: "true"
+      MODE: "adventure"
+      FORCE_GAMEMODE: "true"
+      ENFORCE_SECURE_PROFILE: "false"
+      ENABLE_RCON: "true"
+      RCON_PASSWORD: "${RCON_PASSWORD}"
+      RCON_PORT: "25575"
+    volumes:
+      - "./lobby:/data"
+      - "./shared/MythicMobs/Mobs:/data/plugins/MythicMobs/Mobs"
+      - "./shared/MythicMobs/Skills:/data/plugins/MythicMobs/Skills"
+      - "./shared/MythicMobs/Items:/data/plugins/MythicMobs/Items"
+      - "./shared/MythicMobs/Drops:/data/plugins/MythicMobs/Drops"
+      - "./shared/MythicMobs/RandomSpawns:/data/plugins/MythicMobs/RandomSpawns"
+    depends_on:
+      velocity:
+        condition: service_healthy
+    networks:
+      - mc_network
+    ports:
+
+      - "127.0.0.1:8101:8100" # BlueMap (Pronto per Nginx)
+
+  # ----------------------------------------
+  # SURVIVAL SERVER
+  # ----------------------------------------
+  survival:
+    image: itzg/minecraft-server:latest
+    container_name: mc_survival
+    restart: always
+    tty: true
+    stdin_open: true
+    environment:
+      EULA: "TRUE"
+      TYPE: "PAPER"
+      VERSION: "LATEST"
+      MEMORY: "4096M"
+      CREATE_CONSOLE_IN_PIPE: "true"
+      ONLINE_MODE: "false" # Deve essere false dietro un proxy!
+      SPIGOT_BUNGEECORD: "true"
+      BUNGEECORD: "true"
+      ENFORCE_SECURE_PROFILE: "false"
+      ENABLE_RCON: "true"
+      RCON_PASSWORD: "${RCON_PASSWORD}"
+      RCON_PORT: "25575"
+    volumes:
+      - "./survival:/data"
+      - "./shared/MythicMobs/Mobs:/data/plugins/MythicMobs/Mobs"
+      - "./shared/MythicMobs/Skills:/data/plugins/MythicMobs/Skills"
+      - "./shared/MythicMobs/Items:/data/plugins/MythicMobs/Items"
+      - "./shared/MythicMobs/Drops:/data/plugins/MythicMobs/Drops"
+      - "./shared/MythicMobs/RandomSpawns:/data/plugins/MythicMobs/RandomSpawns"
+    depends_on:
+      velocity:
+        condition: service_healthy
+    networks:
+      - mc_network
+    ports:
+
+      - "127.0.0.1:8102:8100" # BlueMap (Pronto per Nginx)
+
+  # ----------------------------------------
+  # CREATIVE SERVER
+  # ----------------------------------------
+  creative:
+    image: itzg/minecraft-server:latest
+    container_name: mc_creative
+    restart: always
+    tty: true
+    stdin_open: true
+    environment:
+      EULA: "TRUE"
+      TYPE: "PAPER"
+      VERSION: "LATEST"
+      MEMORY: "4096M"
+      CREATE_CONSOLE_IN_PIPE: "true"
+      ONLINE_MODE: "false"
+      SPIGOT_BUNGEECORD: "true"
+      BUNGEECORD: "true"
+      MODE: "creative"
+      FORCE_GAMEMODE: "true"
+      ENFORCE_SECURE_PROFILE: "false"
+      ENABLE_RCON: "true"
+      RCON_PASSWORD: "${RCON_PASSWORD}"
+      RCON_PORT: "25575"
+    volumes:
+      - "./creative:/data"
+      - "./shared/MythicMobs/Mobs:/data/plugins/MythicMobs/Mobs"
+      - "./shared/MythicMobs/Skills:/data/plugins/MythicMobs/Skills"
+      - "./shared/MythicMobs/Items:/data/plugins/MythicMobs/Items"
+      - "./shared/MythicMobs/Drops:/data/plugins/MythicMobs/Drops"
+      - "./shared/MythicMobs/RandomSpawns:/data/plugins/MythicMobs/RandomSpawns"
+    depends_on:
+      velocity:
+        condition: service_healthy
+    networks:
+      - mc_network
+    ports:
+
+      - "127.0.0.1:8103:8100" # BlueMap
+
+  medioeval:
+    image: itzg/minecraft-server
+    container_name: mc_medioeval
+    ports:
+
+      - "127.0.0.1:8104:8100" # BlueMap
+    environment:
+      EULA: "TRUE"
+      TYPE: PAPER
+      VERSION: "LATEST"
+      CREATE_CONSOLE_IN_PIPE: "true"
+      ONLINE_MODE: "FALSE"
+      SPIGOT_BUNGEECORD: "true"
+      BUNGEECORD: "true"
+      EXTRA_ARGS: "--safeMode"
+      ENFORCE_SECURE_PROFILE: "false"
+      ENABLE_RCON: "true"
+      RCON_PASSWORD: "${RCON_PASSWORD}"
+      RCON_PORT: "25575"
+    volumes:
+      - ./medioeval:/data
+      - "./shared/MythicMobs/Mobs:/data/plugins/MythicMobs/Mobs"
+      - "./shared/MythicMobs/Skills:/data/plugins/MythicMobs/Skills"
+      - "./shared/MythicMobs/Items:/data/plugins/MythicMobs/Items"
+      - "./shared/MythicMobs/Drops:/data/plugins/MythicMobs/Drops"
+      - "./shared/MythicMobs/RandomSpawns:/data/plugins/MythicMobs/RandomSpawns"
+    depends_on:
+      velocity:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - mc_network
+
+  motoleo:
+    image: itzg/minecraft-server
+    container_name: mc_motoleo
+    ports:
+
+      - "127.0.0.1:8105:8100" # BlueMap
+    environment:
+      EULA: "TRUE"
+      TYPE: PAPER
+      VERSION: "LATEST"
+      CREATE_CONSOLE_IN_PIPE: "true"
+      ONLINE_MODE: "FALSE"
+      SPIGOT_BUNGEECORD: "true"
+      BUNGEECORD: "true"
+      ENFORCE_SECURE_PROFILE: "false"
+      ENABLE_RCON: "true"
+      RCON_PASSWORD: "${RCON_PASSWORD}"
+      RCON_PORT: "25575"
+    volumes:
+      - ./motoleo:/data
+      - "./shared/MythicMobs/Mobs:/data/plugins/MythicMobs/Mobs"
+      - "./shared/MythicMobs/Skills:/data/plugins/MythicMobs/Skills"
+      - "./shared/MythicMobs/Items:/data/plugins/MythicMobs/Items"
+      - "./shared/MythicMobs/Drops:/data/plugins/MythicMobs/Drops"
+      - "./shared/MythicMobs/RandomSpawns:/data/plugins/MythicMobs/RandomSpawns"
+    depends_on:
+      velocity:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - mc_network
+
+  # ----------------------------------------
+  # WEB PANEL (Next.js)
+  # ----------------------------------------
+  panel:
+    build:
+      context: ./admin
+      dockerfile: Dockerfile
+    container_name: mc_panel
+    restart: always
+    depends_on:
+      velocity:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/login || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    volumes:
+      - ./admin/data:/app/data
+      - ./admin/.env:/app/.env
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/debian/minecraft-server:/home/debian/minecraft-server
+    networks:
+      - mc_network
+
+  scheduler:
+    build:
+      context: ./admin
+      dockerfile: Dockerfile
+    container_name: mc_scheduler
+    restart: always
+    command: ["node", "scheduler.js"]
+    depends_on:
+      panel:
+        condition: service_healthy
+    volumes:
+      - ./admin/data:/app/data
+      - ./admin/.env:/app/.env
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/debian/minecraft-server:/home/debian/minecraft-server
+    networks:
+      - mc_network
+
+  # ----------------------------------------
+  # NGINX REVERSE PROXY
+  # ----------------------------------------
+  nginx:
+    image: nginx:latest
+    container_name: mc_nginx
+    restart: always
+    ports:
+      - "9800:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      panel:
+        condition: service_healthy
+    networks:
+      - mc_network
+
+networks:
+  mc_network:
+    driver: bridge

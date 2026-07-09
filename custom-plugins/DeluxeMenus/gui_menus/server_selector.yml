@@ -1,0 +1,30 @@
+menu_title: '&8&lSeleziona un Server'
+open_command: menu
+size: 27
+items:
+  'survival':
+    material: DIAMOND_PICKAXE
+    slot: 11
+    display_name: '&a&lSurvival'
+    lore:
+      - '&7Server sopravvivenza puro.'
+      - '&7Raccogli risorse e costruisci!'
+      - ''
+      - '&eClicca per connetterti!'
+    left_click_commands:
+      - '[connect] survival'
+    right_click_commands:
+      - '[connect] survival'
+  'creative':
+    material: GRASS_BLOCK
+    slot: 15
+    display_name: '&b&lCreative'
+    lore:
+      - '&7Costruzioni infinite.'
+      - '&7Mostra la tua arte!'
+      - ''
+      - '&eClicca per connetterti!'
+    left_click_commands:
+      - '[connect] creative'
+    right_click_commands:
+      - '[connect] creative'

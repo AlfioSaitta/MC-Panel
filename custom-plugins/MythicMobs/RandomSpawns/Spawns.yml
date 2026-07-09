@@ -1,0 +1,12 @@
+RandomSkeletonKing:
+  MobType: SkeletonKing
+  # Si applica ai mondi survival, adventure (e di default ai mondi chiamati 'world' nel container)
+  # Essendo bloccato fisicamente (jar rimosso) negli altri server da deploy.sh, 
+  # questo assicura che spawni solo ed esclusivamente nei server di competenza.
+  Worlds: world, survival, adventure
+  Chance: 0.01
+  Priority: 1
+  Action: ADD
+  Conditions:
+  - outside true
+  - day false

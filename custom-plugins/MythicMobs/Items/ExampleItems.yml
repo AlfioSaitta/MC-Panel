@@ -1,0 +1,13 @@
+SkeletonKingSword:
+  Id: IRON_SWORD
+  Display: '&4Spada del Re Scheletro'
+  Lore:
+  - '&7Un artefatto mistico.'
+  - '&7Skript intercetta questo oggetto!'
+  Enchantments:
+  - DAMAGE_ALL:5
+  Options:
+    Unbreakable: true
+  # NBT Tag Custom per identificarlo nel database tramite mc-data-bridge e Skript
+  NBT:
+    CustomBossItem: "SkeletonKingSword"

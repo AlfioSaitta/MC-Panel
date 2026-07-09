@@ -1,0 +1,20 @@
+on join:
+    wait 5 ticks
+    set slot 4 of player's inventory to compass named "&b&lNavigatore Network &7(Click Destro)" with lore "&7Scegli il server in cui" and "&7vuoi giocare!"
+
+on respawn:
+    wait 5 ticks
+    set slot 4 of player's inventory to compass named "&b&lNavigatore Network &7(Click Destro)" with lore "&7Scegli il server in cui" and "&7vuoi giocare!"
+
+on right click with compass:
+    if name of player's tool is "&b&lNavigatore Network &7(Click Destro)":
+        cancel event
+        make player execute command "/server_selector"
+
+on drop of compass:
+    if name of event-item is "&b&lNavigatore Network &7(Click Destro)":
+        cancel event
+
+on inventory click:
+    if name of event-item is "&b&lNavigatore Network &7(Click Destro)":
+        cancel event

@@ -1,0 +1,78 @@
+# =========================
+# OS and Environment
+# =========================
+.DS_Store
+Thumbs.db
+.env
+!.env.example
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# =========================
+# Web Panel (Next.js)
+# =========================
+# Note: web-panel has its own .gitignore, but we can add safeguards here.
+web-panel/node_modules/
+web-panel/.next/
+web-panel/out/
+web-panel/build/
+web-panel/.env*
+
+# =========================
+# Minecraft Server Runtimes
+# =========================
+# Ignore downloaded server and proxy jars
+**/*.jar
+# EXCEPTION: We track custom plugins and proxy plugins specifically injected by us
+!custom-plugins/**/*.jar
+!proxy/plugins/**/*.jar
+
+# Ignore World Data (Very Important!)
+**/world/
+**/world_nether/
+**/world_the_end/
+**/world_the_end/
+**/level.dat
+**/level.dat_old
+**/session.lock
+**/uid.dat
+
+# Ignore Logs and Crash Reports
+**/logs/
+**/crash-reports/
+**/*.log
+**/*.log.gz
+
+# Ignore Caches and Libraries downloaded by Paper/Velocity
+**/cache/
+**/.cache/
+**/libraries/
+**/versions/
+**/bundler/
+
+# =========================
+# Databases & Plugin Data
+# =========================
+# Ignore local database files
+**/*.db
+**/*.sqlite
+**/*.mv.db
+**/*.db-shm
+**/*.db-wal
+db_data/
+
+# Ignore constantly changing plugin metrics and backups
+**/plugins/bStats/
+**/plugins/PluginMetrics/
+**/plugins/AuthMe/authme.db
+**/plugins/CoreProtect/database.db
+**/plugins/LuckPerms/luckperms-*.db
+**/plugins/RedisChat/redischat.db
+**/plugins/*/backups/
+**/plugins/*/data/
+
+# Ignore player data caches inside plugins (e.g. Essentials userdata)
+**/plugins/Essentials/userdata/
+**/plugins/AuthMe/playerdata/

@@ -1,0 +1,18 @@
+# Esempio di Boss base che coesiste con SentientMobs
+SkeletonKing:
+  Type: Wither_Skeleton
+  Display: '&6Re Scheletro'
+  Health: 500
+  Damage: 12
+  Options:
+    # Mantiene il target vanilla per far lavorare SentientMobs e ProtocolLib!
+    ClearModels: false
+    # Importante: Lasciamo i goal selector attivi se vogliamo che l'IA di SentientMobs lo muova
+    PreventOtherDrops: false
+  Skills:
+    - message{m="<target.name> non puoi sfuggirmi!"} @Target ~onTimer:100
+  Drops:
+    # Usa un drop Vanilla, ma lo marchia con NBT custom 
+    # In modo che Skript e mc-data-bridge possano intercettarlo per funzionalità custom
+    - SkeletonKingSword 1 1
+    - exp 100

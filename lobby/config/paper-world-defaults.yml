@@ -1,0 +1,16 @@
+# Configurazione Ottimizzata per Pathfinding e IA (SentientMobs)
+paper:
+  entities:
+    behavior:
+      mobs-can-always-pick-up-loot:
+        zombies: true
+        skeletons: true
+    # Ottimizzazione essenziale per bilanciare Pathfinding range (evita lag)
+    # Impostato a 32 come richiesto (default vanilla = 16, alcune mod richiedono di più, ma 32 è un ottimo compromesso).
+  world-settings:
+    default:
+      entities:
+        behavior:
+          zombie-villager-infection-chance: -1.0
+          nerf-spawner-mobs: false
+        pathfinding-range: 32.0

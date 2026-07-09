@@ -1,0 +1,25 @@
+Configuration:
+  General:
+    # Ignora i mondi elencati. Sebbene abbiamo escluso il JAR tramite deploy.sh 
+    # per Zero Overhead, lo manteniamo qui come ulteriore misura di sicurezza in caso 
+    # di installazioni accidentali o manuali.
+    DisableInWorlds:
+    - lobby
+    - creative
+    - motoleo
+    - medioeval
+    - world_the_end
+    # Compatibilità PlaceholderAPI per mostrare le chat dei boss
+    AllowExternalPlaceholders: true
+    # Ottimizzazioni
+    CheckForUpdates: false
+    DebugLevel: 0
+  Clock:
+    # Frequenza dei check (ottimizzata)
+    UpdateInterval: 2
+  Mobs:
+    # Impedisce ai Vanilla Target Selectors di essere annullati.
+    # Questo è FONDAMENTALE affinché SentientMobs possa sovrascrivere l'IA!
+    PreventOtherDrops: false
+    EnableVanillaAI: true
+    ClearVanillaAI: false
