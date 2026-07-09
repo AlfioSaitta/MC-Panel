@@ -16,15 +16,52 @@ L'infrastruttura si basa su un'architettura a microservizi gestita tramite Docke
 - **Web Panel (Next.js):** La dashboard amministrativa che comunica con i mondi via RCON, API Docker e API del FileSystem per provisionare nuovi mondi, gestire plugin, giocatori e prestazioni.
 - **`custom-plugins`:** Cartella globale centralizzata in cui risiedono i plugin di base che vengono automaticamente ereditati e sincronizzati in ogni server creato.
 
-### 🧩 Plugin Installati di Default
-Il network è pre-configurato con una suite essenziale di plugin moderni, già interconnessi ai database centralizzati:
-- **Autenticazione e Sicurezza:** `AuthMe` + `AuthMeVelocity` (Login sincronizzato), `LibertyBans` (Ban globali sincronizzati via DB), `BetterGrim` (Anti-cheat asincrono basato su simulazione predittiva).
-- **Economia Globale:** `XConomy` + `Vault` (Sincronizzazione MariaDB e trasferimenti Live via Redis).
-- **Sincronizzazione Dati:** `HuskSync` (Sincronizzazione automatica inventari, salute ed enderchest tramite MariaDB e Redis).
-- **Core & Gestione:** `LuckPerms` (Permessi centralizzati SQL), `CommandAPI`, `PlaceholderAPI`, `Skript` (Eventi e Bussola Nativa senza NBT).
-- **Network & Chat:** `BungeeTP` (Teletrasporto cross-server), `RedisChat` (Chat globale unificata), `ProtocolLib` (Packet interception).
-- **Costruzione:** `AdvancedPortals` (Portali), `WorldEdit` (Costruzione rapida), `WorldGuard` (Protezione regioni).
-- **Lobby & QoL:** `DeluxeMenus` (Menu GUI interattivi), `ConditionalEvents`, `FancyNpcs` (NPC).
+### 🧩 Plugin Installati di Default (Lista Completa)
+Il network è pre-configurato con una suite essenziale di plugin moderni, divisi strategicamente in base al loro ruolo infrastrutturale:
+
+#### 1. Proxy (Velocity) - Cartella `proxy/plugins/`
+| Plugin | Funzionalità Principale |
+| :--- | :--- |
+| **AdvancedPortals** | Gestione del routing fisico tra server (portali fluidi). |
+| **AuthMeVelocity-Proxy**<br>**AuthMeVelocity-LastServerAddon** | Hook del login AuthMe e redirect automatico all'ultimo server frequentato. |
+| **LibertyBans** | Sistema globale di ban e mute (sincronizzato via database). |
+| **LuckPerms-Velocity** | Gestore ruoli e permessi a livello di rete. |
+| **SkinsRestorer** | Ripristina le skin dei giocatori offline/cracked. |
+| **TAB** & **VelocityScoreboardAPI** | Personalizzazione estetica dell'HUD (Tablist, Tag sopra la testa). |
+| **spark** | Profiler prestazionale globale (Diagnosi lag proxy). |
+
+#### 2. Plugin Condivisi (Tutti i Backend) - Cartella `custom-plugins/`
+*Nota: Lo script `deploy.sh` inietta **automaticamente** questi plugin in: Lobby, Survival, Creative, MotoLeo, Medioeval.*
+
+| Plugin | Funzionalità Principale |
+| :--- | :--- |
+| **BetterGrim** | Sistema Anti-cheat. |
+| **BungeeTP** | Motore di teletrasporto cross-server. |
+| **CommandAPI** | Astrazione API per la registrazione di comandi avanzati. |
+| **DeluxeMenus** | Generazione di GUI interattive (Menù server). |
+| **EssentialsX** | Motore di comandi base di Minecraft (es. /god, /fly, /heal). |
+| **LibertyBans** | Ascoltatore lato backend per l'applicazione delle punizioni. |
+| **LuckPerms** | Motore di gestione permessi. Configurazioni mappate allo stesso DB del Proxy per sync globale. |
+| **MythicMobs** | Framework avanzato per creare mostri, boss e abilità custom. *(Configurazioni condivise globalmente).* |
+| **Citizens** | API e sistema NPC. |
+| **PlaceholderAPI** | Sostitutore di variabili dinamiche (PAPI). |
+| **ProtocolLib** | Packet API per modifiche profonde a livello client-server. |
+| **SentientMobs** | Sostituisce l'intelligenza artificiale (AI) di default per rendere i mostri strategici. |
+| **Skript** & **skript-worldguard** | Linguaggio di scripting in-game e integrazioni per le regioni. |
+| **Vault** & **XConomy** | Interfaccia ed engine del sistema di Economia centralizzata. |
+| **worldedit** & **worldguard** | Sistemi di building massivo e protezione anti-griefing del territorio. |
+| **bluemap-paper** | Rendering della web-map 3D in tempo reale. |
+| **HuskSync** | Sincronizzazione automatica inventari, salute e avanzamenti a database. |
+| **RedisChat** | Chat globale unificata tra tutti i mondi. |
+| **ViaBackwards** & **ViaVersion** | Compatibilità di connessione per client vecchi o futuri. |
+
+#### 3. Plugin Esclusivi LOBBY - Cartella `lobby/plugins/`
+> **⚠ REGOLA CRITICA**: Lo script di deploy è programmato per **CANCELLARE** forzatamente qualsiasi `.jar` di AuthMe dagli altri server di backend, prevenendo auth-bypass. **AuthMe deve girare solo ed esclusivamente sulla Lobby.**
+
+| Plugin | Funzionalità Principale |
+| :--- | :--- |
+| **AuthMe** | Core di registrazione e login per reti offline/cracked. |
+| **AuthMeVelocity-Paper** | Invia il segnale "*login avvenuto con successo*" al Proxy Velocity. |
 
 
 ---
