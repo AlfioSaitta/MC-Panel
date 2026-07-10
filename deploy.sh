@@ -95,6 +95,13 @@ if [ "$DEPLOY_SERVER" = true ]; then
     rm -rf $SERVER_DIR/motoleo/plugins/AuthMe*.jar
 
     # MythicMobs ora è globale, non lo rimuoviamo più da lobby e creative.
+    
+    # Distribuisce il file commands.yml condiviso a tutti i server backend
+    cp $SERVER_DIR/shared/commands.yml $SERVER_DIR/lobby/commands.yml || true
+    cp $SERVER_DIR/shared/commands.yml $SERVER_DIR/survival/commands.yml || true
+    cp $SERVER_DIR/shared/commands.yml $SERVER_DIR/creative/commands.yml || true
+    cp $SERVER_DIR/shared/commands.yml $SERVER_DIR/medioeval/commands.yml || true
+    cp $SERVER_DIR/shared/commands.yml $SERVER_DIR/motoleo/commands.yml || true
 
     # Rimuove ViaVersion, ViaBackwards e SimpleReconnect dal Proxy (il Proxy Velocity supporta fallback nativamente)
     rm -rf $SERVER_DIR/proxy/plugins/ViaVersion*.jar
@@ -105,6 +112,7 @@ EOF
   scp -i $SSH_KEY_PATH docker-compose.yml $VPS_USER@$VPS_IP:$SERVER_DIR/
   # Copia il file di esempio .env se non esiste sulla VPS, così i container si avviano
   scp -i $SSH_KEY_PATH .env.example $VPS_USER@$VPS_IP:$SERVER_DIR/.env
+  rsync -avz -e "ssh -i $SSH_KEY_PATH" shared/ $VPS_USER@$VPS_IP:$SERVER_DIR/shared/
   rsync -avz -e "ssh -i $SSH_KEY_PATH" proxy/ $VPS_USER@$VPS_IP:$SERVER_DIR/proxy/
   rsync -avz -e "ssh -i $SSH_KEY_PATH" lobby/ $VPS_USER@$VPS_IP:$SERVER_DIR/lobby/
   rsync -avz -e "ssh -i $SSH_KEY_PATH" survival/ $VPS_USER@$VPS_IP:$SERVER_DIR/survival/

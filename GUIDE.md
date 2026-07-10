@@ -7,7 +7,7 @@
 1. [🗺️ Architettura del Network](#-architettura-del-network)
 2. [🛡️ Autenticazione e Profilo (Lobby)](#-1-autenticazione-e-profilo-lobby)
 3. [⚖️ Moderazione e Anti-Cheat](#-2-moderazione-e-anti-cheat)
-4. [💰 Economia (XConomy)](#-3-economia-xconomy)
+4. [💰 Economia (ExcellentEconomy)](#-3-economia-excellenteconomy)
 5. [💬 Chat Sociale](#-4-chat-sociale)
 6. [🚀 Movimento e Navigazione](#-5-movimento-e-navigazione)
 7. [👑 Ruoli e Permessi (LuckPerms)](#-6-ruoli-e-permessi-luckperms)
@@ -119,17 +119,17 @@ Nessun comando necessario! L'anticheat agisce in modo passivo e asincrono per pr
 
 ---
 
-## 💰 3. Economia (XConomy)
+## 💰 3. Economia (ExcellentEconomy)
 
-L'economia è persistente e unificata su database. I portafogli viaggiano da server a server.
+L'economia è persistente, asincrona e unificata su database MySQL. I portafogli viaggiano da server a server senza lag o de-sync.
 
 | Comando | Esecutore | Azione / Descrizione |
 | :--- | :--- | :--- |
 | `/money` o `/balance` | 👤 Giocatore | Visualizza il saldo bancario attuale. |
-| `/pay <giocatore> <importo>` | 👤 Giocatore | Dona denaro. |
-| `/baltop` | 👤 Giocatore | Mostra la classifica generale dei più ricchi. |
-| `/money set <giocatore> <importo>` | 👑 Admin | Inizializza un saldo preciso. |
-| `/money give <giocatore> <importo>`| 👑 Admin | Genera e accredita fondi artificialmente. |
+| `/pay <giocatore> <importo>` | 👤 Giocatore | Dona denaro a un altro utente in qualsiasi server. |
+| `/baltop` | 👤 Giocatore | Mostra la classifica generale dei più ricchi della rete. |
+| `/eco set <giocatore> <importo>` | 👑 Admin | Inizializza un saldo preciso. |
+| `/eco give <giocatore> <importo>`| 👑 Admin | Genera e accredita fondi artificialmente. |
 
 ---
 

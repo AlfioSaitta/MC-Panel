@@ -134,43 +134,42 @@ Questa è la mappatura esatta dei container e dei plugin attualmente attivi nell
 #### 1. Proxy (Velocity) - Cartella `proxy/plugins/`
 | Plugin | Funzionalità Principale |
 | :--- | :--- |
-| **AdvancedPortals** | Gestione del routing fisico tra server (portali fluidi). |
-| **AuthMeVelocity-Proxy**<br>**AuthMeVelocity-LastServerAddon** | Hook del login AuthMe e redirect automatico all'ultimo server frequentato. |
-| **LibertyBans** | Sistema globale di ban e mute (sincronizzato via database). |
-| **LuckPerms-Velocity** | Gestore ruoli e permessi a livello di rete. |
-| **SkinsRestorer** | Ripristina le skin dei giocatori offline/cracked. |
-| **TAB** & **VelocityScoreboardAPI** | Personalizzazione estetica dell'HUD (Tablist, Tag sopra la testa). |
-| **spark** | Profiler prestazionale globale (Diagnosi lag proxy). |
+| **AdvancedPortals** (v2.8.0) | Gestione del routing fisico tra server (portali fluidi). |
+| **AuthMeVelocity-Proxy** (v4.0.1)<br>**AuthMeVelocity-LastServerAddon** (v1.1.1) | Hook del login AuthMe e redirect automatico all'ultimo server frequentato. |
+| **LibertyBans** (v1.1.4-SNAPSHOT) | Sistema globale di ban e mute (sincronizzato via database). |
+| **LuckPerms-Velocity** (v5.5.59) | Gestore ruoli e permessi a livello di rete. |
+| **SkinsRestorer** (v15.12.4) | Ripristina le skin dei giocatori offline/cracked. |
+| **TAB** (v6.1.0) & **VelocityScoreboardAPI** (v2.1.0) | Personalizzazione estetica dell'HUD (Tablist, Tag sopra la testa). |
+| **spark** (v1.10.173) | Profiler prestazionale globale (Diagnosi lag proxy). |
 
 #### 2. Plugin Condivisi (Tutti i Backend) - Cartella `custom-plugins/`
 *Nota: Lo script `deploy.sh` inietta **automaticamente** questi plugin in: Lobby, Survival, Creative, MotoLeo, Medioeval.*
 
 | Plugin | Funzionalità Principale |
 | :--- | :--- |
-| **BetterGrim** | Sistema Anti-cheat. |
-| **BungeeTP** | Motore di teletrasporto cross-server. |
-| **CommandAPI** | Astrazione API per la registrazione di comandi avanzati. |
-| **DeluxeMenus** | Generazione di GUI interattive (Menù server). |
-| **EssentialsX** | Motore di comandi base di Minecraft (es. /god, /fly, /heal). |
-| **LibertyBans** | Ascoltatore lato backend per l'applicazione delle punizioni. |
-| **LuckPerms** | Motore di gestione permessi. Configurazioni mappate allo stesso DB del Proxy per sync globale. |
-| **MythicMobs** | Framework avanzato per creare mostri, boss e abilità custom. *(Configurazioni Mobs/Skills/Items condivise globalmente tra tutti i server via mount Docker).* |
-| **Citizens** | API e sistema NPC (NOTA: download protetto, `Citizens-*.jar` va scaricato manualmente da [https://ci.citizensnpcs.co/job/Citizens2/](https://ci.citizensnpcs.co/job/Citizens2/) e inserito nella cartella `custom-plugins`). |
-| **PlaceholderAPI** | Sostitutore di variabili dinamiche (PAPI). |
-| **ProtocolLib** | Packet API per modifiche profonde a livello client-server. |
-| **SentientMobs** | Sostituisce l'intelligenza artificiale (AI) di default per rendere i mostri strategici. |
-| **Skript** & **skript-worldguard** | Linguaggio di scripting in-game e integrazioni per le regioni. |
-| **Vault** & **XConomy** | Interfaccia ed engine del sistema di Economia centralizzata. |
-| **worldedit** & **worldguard** | Sistemi di building massivo e protezione anti-griefing del territorio. |
-| **bluemap-paper** | Rendering della web-map 3D in tempo reale. |
-| **HuskSync** | Sincronizzazione automatica inventari, salute e avanzamenti a database. |
-| **RedisChat** | Chat globale unificata tra tutti i mondi. |
-| **ViaBackwards** & **ViaVersion** | Compatibilità di connessione per client vecchi o futuri. |
+| **BetterGrim** (GrimAC v2.3.74) | Sistema Anti-cheat. |
+| **BungeeTP** (v1.0) | Motore di teletrasporto cross-server. |
+| **CommandAPI** (v11.2.0) | Astrazione API per la registrazione di comandi avanzati. |
+| **EssentialsX** (v2.22.0) | Motore di comandi base di Minecraft (es. /god, /fly, /heal). |
+| **LibertyBans** (v1.1.4-SNAPSHOT) | Ascoltatore lato backend per l'applicazione delle punizioni. |
+| **LuckPerms** (v5.5.59) | Motore di gestione permessi. Configurazioni mappate allo stesso DB del Proxy per sync globale. |
+| **MythicMobs** (v5.12.1) | Framework avanzato per creare mostri, boss e abilità custom. *(Configurazioni Mobs/Skills/Items condivise globalmente tra tutti i server via mount Docker).* |
+| **Citizens** (v2.0.43-SNAPSHOT) | API e sistema NPC (NOTA: download protetto, `Citizens-*.jar` va scaricato manualmente da [https://ci.citizensnpcs.co/job/Citizens2/](https://ci.citizensnpcs.co/job/Citizens2/) e inserito nella cartella `custom-plugins`). |
+| **PlaceholderAPI** (v2.12.3) | Sostitutore di variabili dinamiche (PAPI). |
+| **ProtocolLib** (v5.4.0) | Packet API per modifiche profonde a livello client-server. |
+| **SentientMobs** (v2.3.1) | Sostituisce l'intelligenza artificiale (AI) di default per rendere i mostri strategici. |
+| **Skript** (v2.15.4) & **skript-worldguard** (v1.0.1) | Linguaggio di scripting in-game e integrazioni per le regioni. |
+| **Vault-Updated** (v2.0.0) & **ExcellentEconomy** (v2.8.0) | Interfaccia ed engine del sistema di Economia centralizzata. |
+| **worldedit** (v7.4.4-beta) & **worldguard** (v7.0.17) | Sistemi di building massivo e protezione anti-griefing del territorio. |
+| **bluemap-paper** (v5.22) | Rendering della web-map 3D in tempo reale. |
+| **HuskSync** (v4.0.0) | Sincronizzazione automatica inventari, salute e avanzamenti a database. |
+| **RedisChat** (v5.5.17) | Chat globale unificata tra tutti i mondi. |
+| **ViaBackwards** (v5.10.0) & **ViaVersion** (v5.10.0) | Compatibilità di connessione per client vecchi o futuri. |
 
 #### 3. Plugin Esclusivi LOBBY - Cartella `lobby/plugins/`
 > **⚠ REGOLA CRITICA**: Lo script di deploy è programmato per **CANCELLARE** forzatamente qualsiasi `.jar` di AuthMe dagli altri server di backend, prevenendo auth-bypass. **AuthMe deve girare solo ed esclusivamente sulla Lobby.**
 
 | Plugin | Funzionalità Principale |
 | :--- | :--- |
-| **AuthMe** | Core di registrazione e login per reti offline/cracked. |
-| **AuthMeVelocity-Paper** | Invia il segnale "*login avvenuto con successo*" al Proxy Velocity. |
+| **AuthMe** (v5.6.0-beta2) | Core di registrazione e login per reti offline/cracked. |
+| **AuthMeVelocity-Paper** (v4.3.0) | Invia il segnale "*login avvenuto con successo*" al Proxy Velocity. |

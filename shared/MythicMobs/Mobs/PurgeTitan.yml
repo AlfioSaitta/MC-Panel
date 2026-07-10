@@ -1,0 +1,50 @@
+PurgeTitan:
+  Type: GIANT
+  Display: '&c&lIl Titano Purificatore'
+  Health: 9999
+  Damage: 0
+  Faction: Purger
+  Options:
+    MovementSpeed: 0
+    KnockbackResistance: 1
+    PreventOtherDrops: true
+    Invincible: true
+    Silent: true
+  AIGoalSelectors:
+  - clear
+  AITargetSelectors:
+  - clear
+  Skills:
+  - message{m="<mob.name>&f <red>Il ciclo di purificazione e' iniziato. Ogni abominio verra' estirpato."} @PlayersInWorld ~onSpawn
+  - effect:lightning @self ~onSpawn
+  - skill{s=SpawnPurgeArmy} @self ~onSpawn
+  - skill{s=PurgeTitanEnd} @self ~onTimer:1200
+  - effect:particles{p=flame;a=100;s=1} @self ~onTimer:10
+
+PurgeMinion:
+  Type: WITHER_SKELETON
+  Display: '&4Cacciatore Epuratore'
+  Health: 50
+  Damage: 50
+  Faction: Purger
+  Equipment:
+  - NETHERITE_SWORD HAND
+  Options:
+    MovementSpeed: 0.5
+    FollowRange: 64
+    PreventOtherDrops: true
+    Silent: true
+  AIGoalSelectors:
+  - clear
+  - meleeattack
+  - randomstroll
+  AITargetSelectors:
+  - clear
+  - monsters
+  - slimes
+  - flyingmonsters
+  Skills:
+  - effect:particles{p=smoke_large;a=10;s=0.1} @self ~onTimer:5
+  - remove @self ~onSignal:Suicide
+  - effect:particles{p=explosion_large} @self ~onSignal:Suicide
+  - remove @self ~onTimer:1250
