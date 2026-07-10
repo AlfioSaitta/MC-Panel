@@ -74,6 +74,11 @@ Questa documentazione è dedicata a futuri Agenti (AI) per mantenere coerenza ar
 - **Causa:** Non è un vero errore di avvio, ma l'annuncio predefinito (`announcementName: default`) nel file `config.yml` di RedisChat che l'autore ha inserito per ricordare di fare l'override dei comandi.
 - **Soluzione:** L'annuncio è stato cancellato eliminando l'array `announcer` in tutti i `config.yml` locali. L'override reale è stato comunque garantito tramite `commands.yml` (vedi punto M).
 
+### P. Parser YAML e Integrazioni Visuali (MythicMobs)
+- **Sintomo:** Fornire unicamente un editor testuale per MythicMobs costringe gli admin a ricordare complesse configurazioni YAML, incoraggiando errori di sintassi e indentazione.
+- **Soluzione (Architettura Web Panel):** Nel pannello Next.js (`(dashboard)/mobs/page.tsx`) è stato implementato un "Visual Editor" a schede che trasforma il file YAML in componenti UI (Dropdown, Checkbox, Input numerici) coprendo Movimento, Restrizioni Vanilla (Anti-Grief), e BossBar.
+- **Regola di Sviluppo per AI:** Quando si aggiungono nuove opzioni visuali a questo editor, usare `handleCategoryChange` per le strutture nidificate. Tale logica ricrea e serializza l'oggetto in tempo reale via `yaml.dump({lineWidth: -1})`. È vitale eliminare le chiavi quando un valore diventa vuoto/undefined (es. `delete newData[category][field]`) affinché il parser non generi file YAML inquinati da nodi vuoti che causano crash su MythicMobs al reload.
+
 ### L. Gestione Permessi: Rete Globale (Proxy + Backend)
 - **Sintomo Storico:** Comandi da amministratore come `/god` (backend) o `/skin` (proxy) non funzionavano, o i giocatori admin lamentavano di aver perso i privilegi dopo aver provato comandi per i quali mancavano i plugin fisici (es. Citizens/MythicMobs).
 - **Nuova Architettura Permessi:** LuckPerms è ora installato **sia sul nodo Proxy (Velocity) sia su tutti i nodi Backend (Lobby, Survival, ecc.)**. Tutti i nodi sono configurati per leggere dallo stesso database MariaDB (`mc_db`) e si sincronizzano in tempo reale tramite la tabella `luckperms_messenger`.

@@ -273,6 +273,10 @@ Gli NPC sono utilissimi per fare da mercanti, guide o ologrammi viventi negli sp
 MythicMobs permette di creare nemici formidabili con abilità, magie e drop unici.
 
 > [!TIP]
+> **Editor Visuale per i Mob!**
+> Non impazzire scrivendo a mano righe di codice YAML se non vuoi! Dal **Pannello di Controllo Web**, recati nella sezione "Mobs". Li troverai un **Editor Visuale** guidato che ti permetterà di configurare con drop-down, caselle di controllo e campi numerici tutta la base dei tuoi mostri: restrizioni vanilla, movimento, barra della salute (BossBar) personalizzata e stato visivo. Il pannello riformatterà e sincronizzerà tutto in automatico!
+
+> [!TIP]
 > **Architettura Globale!** Tutti i mob, le abilità e gli oggetti creati con MythicMobs sono condivisi e sincronizzati in tempo reale su **tutti** i server (Lobby, Survival, Creative, ecc.) tramite volumi Docker centralizzati. Puoi spawnare qualsiasi boss in qualsiasi mondo!
 
 | Comando | Esecutore | Azione / Descrizione |
