@@ -76,7 +76,8 @@ Questa documentazione è dedicata a futuri Agenti (AI) per mantenere coerenza ar
 
 ### P. Parser YAML e Integrazioni Visuali (MythicMobs)
 - **Sintomo:** Fornire unicamente un editor testuale per MythicMobs costringe gli admin a ricordare complesse configurazioni YAML, incoraggiando errori di sintassi e indentazione.
-- **Soluzione (Architettura Web Panel):** Nel pannello Next.js (`(dashboard)/mobs/page.tsx`) è stato implementato un "Visual Editor" a schede che trasforma il file YAML in componenti UI (Dropdown, Checkbox, Input numerici) coprendo Movimento, Restrizioni Vanilla (Anti-Grief), e BossBar.
+- **Soluzione (Architettura Web Panel):** Nel pannello Next.js (`(dashboard)/mobs/page.tsx`, `items/page.tsx`, `skills/page.tsx`) è stato implementato un "Visual Editor" a schede che trasforma il file YAML in componenti UI (Dropdown, Checkbox, Input numerici) coprendo Movimento, Restrizioni Vanilla (Anti-Grief), Condizioni, Attributi, Ecc. I file sono gestiti in modo globale e non necessitano di selettore per il server. È inoltre supportata la cancellazione globale del file YAML tramite il pulsante 🗑️.
+- **Documentazione Ufficiale MythicMobs:** Per ulteriori implementazioni e chiavi YAML, fare sempre riferimento alla guida ufficiale: [https://git.mythiccraft.io/mythiccraft/MythicMobs/-/wikis/home](https://git.mythiccraft.io/mythiccraft/MythicMobs/-/wikis/home)
 - **Regola di Sviluppo per AI:** Quando si aggiungono nuove opzioni visuali a questo editor, usare `handleCategoryChange` per le strutture nidificate. Tale logica ricrea e serializza l'oggetto in tempo reale via `yaml.dump({lineWidth: -1})`. È vitale eliminare le chiavi quando un valore diventa vuoto/undefined (es. `delete newData[category][field]`) affinché il parser non generi file YAML inquinati da nodi vuoti che causano crash su MythicMobs al reload.
 
 ### L. Gestione Permessi: Rete Globale (Proxy + Backend)

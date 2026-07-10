@@ -270,7 +270,9 @@ Gli NPC sono utilissimi per fare da mercanti, guide o ologrammi viventi negli sp
 | `/npc remove` | 👑 Admin | Elimina l'NPC selezionato. |
 
 ### MythicMobs (Boss e Mob Custom)
-MythicMobs permette di creare nemici formidabili con abilità, magie e drop unici.
+MythicMobs permette di creare nemici formidabili con abilità, magie e drop unici.  
+Puoi creare, modificare ed eliminare graficamente le tue entità direttamente dal **Web Panel** (nella sezione Editor Mostri/Oggetti/Abilità).
+Per esplorare la sterminata lista di parametri e funzionalità supportate da questo plugin, consulta la **Documentazione Ufficiale**: [https://git.mythiccraft.io/mythiccraft/MythicMobs/-/wikis/home](https://git.mythiccraft.io/mythiccraft/MythicMobs/-/wikis/home)
 
 > [!TIP]
 > **Editor Visuale per i Mob!**
