@@ -167,6 +167,7 @@ Questa è la mappatura esatta dei container e dei plugin attualmente attivi nell
 | **HuskSync** (v4.0.0) | Sincronizzazione automatica inventari, salute e avanzamenti a database. |
 | **RedisChat** (v5.5.17) | Chat globale unificata tra tutti i mondi. |
 | **ViaBackwards** (v5.10.0) & **ViaVersion** (v5.10.0) | Compatibilità di connessione per client vecchi o futuri. |
+| **TAB-Bridge** (v6.2.2) | Ponte necessario per inviare i Placeholders dal backend a TAB sul Proxy. |
 
 #### 3. Plugin Esclusivi LOBBY - Cartella `lobby/plugins/`
 > **⚠ REGOLA CRITICA**: Lo script di deploy è programmato per **CANCELLARE** forzatamente qualsiasi `.jar` di AuthMe dagli altri server di backend, prevenendo auth-bypass. **AuthMe deve girare solo ed esclusivamente sulla Lobby.**
