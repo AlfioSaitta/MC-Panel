@@ -102,7 +102,7 @@ Poiché l'account è offline, la skin non si aggiorna automaticamente dai server
 ## ⚖️ 2. Moderazione e Anti-Cheat
 
 > [!WARNING]
-> Grazie a **LibertyBans**, qualsiasi sanzione ha un raggio d'azione globale. Un ban dato nel server "Creative" chiude l'accesso a tutto il Network a livello Proxy (Velocity).
+> Grazie a **LibertyBans**, qualsiasi sanzione ha un raggio d'azione globale tramite database. Un ban dato nel server "Creative" è effettivo ovunque. Al successivo tentativo di connessione, quando il giocatore atterrerà nel server "Lobby", verrà istantaneamente respinto.
 
 ### Punizioni e Controllo
 

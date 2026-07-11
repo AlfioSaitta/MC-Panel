@@ -12,7 +12,7 @@ L'infrastruttura si basa su un'architettura a microservizi gestita tramite Docke
 - **`proxy` (Velocity):** Il punto d'accesso principale per tutti i giocatori (porta `25565`). Gestisce l'instradamento intelligente e l'autenticazione tramite `AuthMeVelocity`.
 - **Mondi PaperMC (`lobby`, `survival`, `creative`, `medioeval`, `motoleo`):** I server di gioco indipendenti. Il proxy smista i giocatori tra di essi.
 - **`redis` (`mc_redis`):** Database in-memory ad altissime prestazioni usato per sincronizzare la chat globale, i dati tra i server (es. RedisChat), e i trasferimenti di valuta dell'economia in tempo reale.
-- **`mariadb` (`mc_db`):** Database relazionale centralizzato. Memorizza i dati dei bans globali (LibertyBans), i permessi (LuckPerms), gli account (AuthMe) e il bilancio globale dell'economia dei giocatori (XConomy).
+- **`mariadb` (`mc_db`):** Database relazionale centralizzato. Memorizza i dati dei bans globali (LibertyBans), i permessi (LuckPerms), gli account (AuthMe) e il bilancio globale dell'economia dei giocatori (ExcellentEconomy).
 - **Web Panel (Next.js):** La dashboard amministrativa che comunica con i mondi via RCON, API Docker e API del FileSystem per provisionare nuovi mondi, gestire plugin, giocatori e prestazioni.
 - **`custom-plugins`:** Cartella globale centralizzata in cui risiedono i plugin di base che vengono automaticamente ereditati e sincronizzati in ogni server creato.
 
@@ -24,7 +24,7 @@ Il network è pre-configurato con una suite essenziale di plugin moderni, divisi
 | :--- | :--- |
 | **AdvancedPortals** (v2.8.0) | Gestione del routing fisico tra server (portali fluidi). |
 | **AuthMeVelocity-Proxy** (v4.0.1)<br>**AuthMeVelocity-LastServerAddon** (v1.1.1) | Hook del login AuthMe e redirect automatico all'ultimo server frequentato. |
-| **LibertyBans** (v1.1.4-SNAPSHOT) | Sistema globale di ban e mute (sincronizzato via database). |
+| **Geyser-Velocity** & **Floodgate** | Traduttore di pacchetti per consentire l'ingresso ai giocatori da Minecraft Bedrock Edition (Console, Mobile, Win10). |
 | **LuckPerms-Velocity** (v5.5.59) | Gestore ruoli e permessi a livello di rete. |
 | **SkinsRestorer** (v15.12.4) | Ripristina le skin dei giocatori offline/cracked. |
 | **TAB** (v6.1.0) & **VelocityScoreboardAPI** (v2.1.0) | Personalizzazione estetica dell'HUD (Tablist, Tag sopra la testa). |
@@ -42,6 +42,7 @@ Il network è pre-configurato con una suite essenziale di plugin moderni, divisi
 | **LibertyBans** (v1.1.4-SNAPSHOT) | Ascoltatore lato backend per l'applicazione delle punizioni. |
 | **LuckPerms** (v5.5.59) | Motore di gestione permessi. Configurazioni mappate allo stesso DB del Proxy per sync globale. |
 | **MythicMobs** (v5.12.1) | Framework avanzato per creare mostri, boss e abilità custom. *(Configurazioni Mobs/Skills/Items condivise globalmente tra tutti i server via mount Docker).* |
+| **Nightcore** (v2.16.3) | Libreria Core e dipendenza fondamentale per il funzionamento di ExcellentEconomy. |
 | **Citizens** (v2.0.43-SNAPSHOT) | API e sistema NPC (NOTA: download protetto, `Citizens-*.jar` va scaricato manualmente da [https://ci.citizensnpcs.co/job/Citizens2/](https://ci.citizensnpcs.co/job/Citizens2/) e inserito nella cartella `custom-plugins`). |
 | **PlaceholderAPI** (v2.12.3) | Sostitutore di variabili dinamiche (PAPI). |
 | **ProtocolLib** (v5.4.0) | Packet API per modifiche profonde a livello client-server. |
