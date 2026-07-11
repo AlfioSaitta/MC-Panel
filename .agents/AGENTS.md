@@ -136,7 +136,6 @@ Questa è la mappatura esatta dei container e dei plugin attualmente attivi nell
 | :--- | :--- |
 | **AdvancedPortals** (v2.8.0) | Gestione del routing fisico tra server (portali fluidi). |
 | **AuthMeVelocity-Proxy** (v4.0.1)<br>**AuthMeVelocity-LastServerAddon** (v1.1.1) | Hook del login AuthMe e redirect automatico all'ultimo server frequentato. |
-| **LibertyBans** (v1.1.4-SNAPSHOT) | Sistema globale di ban e mute (sincronizzato via database). |
 | **LuckPerms-Velocity** (v5.5.59) | Gestore ruoli e permessi a livello di rete. |
 | **SkinsRestorer** (v15.12.4) | Ripristina le skin dei giocatori offline/cracked. |
 | **TAB** (v6.1.0) & **VelocityScoreboardAPI** (v2.1.0) | Personalizzazione estetica dell'HUD (Tablist, Tag sopra la testa). |

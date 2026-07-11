@@ -108,8 +108,9 @@ if [ "$DEPLOY_SERVER" = true ]; then
     rm -rf $SERVER_DIR/proxy/plugins/ViaBackwards*.jar
     rm -rf $SERVER_DIR/proxy/plugins/SimpleReconnect*.jar
     
-    # Rimuove vecchi snapshot di LibertyBans dal proxy per evitare duplicati
-    rm -rf $SERVER_DIR/proxy/plugins/LibertyBans*SNAPSHOT*.jar
+    # Rimuove LibertyBans dal proxy per evitare crash (Kyori Adventure NoSuchMethodError)
+    # L'applicazione delle punizioni avverrà direttamente nei server backend via MariaDB.
+    rm -rf $SERVER_DIR/proxy/plugins/LibertyBans*.jar
 EOF
 
   scp -i $SSH_KEY_PATH docker-compose.yml $VPS_USER@$VPS_IP:$SERVER_DIR/
