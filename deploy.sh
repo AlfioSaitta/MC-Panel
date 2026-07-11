@@ -107,6 +107,9 @@ if [ "$DEPLOY_SERVER" = true ]; then
     rm -rf $SERVER_DIR/proxy/plugins/ViaVersion*.jar
     rm -rf $SERVER_DIR/proxy/plugins/ViaBackwards*.jar
     rm -rf $SERVER_DIR/proxy/plugins/SimpleReconnect*.jar
+    
+    # Rimuove vecchi snapshot di LibertyBans dal proxy per evitare duplicati
+    rm -rf $SERVER_DIR/proxy/plugins/LibertyBans*SNAPSHOT*.jar
 EOF
 
   scp -i $SSH_KEY_PATH docker-compose.yml $VPS_USER@$VPS_IP:$SERVER_DIR/
