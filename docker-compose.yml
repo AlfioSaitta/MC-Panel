@@ -50,7 +50,7 @@ services:
     tty: true
     environment:
       TYPE: VELOCITY
-      VELOCITY_VERSION: "3.4.0-SNAPSHOT"
+      VELOCITY_VERSION: "3.5.1"
     ports:
       - "25565:25577"
     healthcheck:
