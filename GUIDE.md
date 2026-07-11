@@ -17,6 +17,8 @@
 11. [🐲 Gestione NPC e Mob Custom](#-10-gestione-npc-e-mob-custom)
 12. [📊 Diagnostica e Prestazioni](#-11-diagnostica-e-prestazioni)
 13. [⚡ Comandi Essenziali (EssentialsX)](#-12-comandi-essenziali-e-qualità-della-vita-essentialsx)
+14. [🎨 Menu Interattivi (zMenu)](#-13-menu-interattivi-zmenu)
+15. [🔗 Integrazione di Sistema (Sviluppatori)](#-14-integrazione-di-sistema-avanzata-sviluppatori)
 
 ---
 
@@ -96,6 +98,11 @@ Poiché l'account è offline, la skin non si aggiorna automaticamente dai server
 | `/skin update` | 👤 Giocatore | Ricarica la skin in caso di aggiornamenti. |
 | `/skin clear` | 👤 Giocatore | Torna alla skin di default (Steve/Alex). |
 | `/sr set <giocatore> <skin>` | 👑 Admin | Assegna forzatamente una skin a qualcuno. |
+
+### Accesso Cross-Play (Geyser & Floodgate)
+Il network supporta l'accesso nativo per i giocatori da **Minecraft Bedrock Edition** (Console, Mobile, Windows 10) garantendo piena integrazione.
+- Il loro nome in gioco sarà automaticamente preceduto da un asterisco `*` (es. `*Steve`).
+- AuthMe è già pre-configurato per accettare questi caratteri speciali. I giocatori Bedrock dovranno semplicemente usare i comandi `/register` e `/login` alla prima connessione, esattamente come gli utenti Java.
 
 ---
 
@@ -328,11 +335,22 @@ Molti dei classici comandi "Vanilla" potenziati o comandi di comodità per lo St
 
 ---
 
-## 🔗 13. Integrazione di Sistema Avanzata (Sviluppatori)
+## 🎨 13. Menu Interattivi (zMenu)
+
+Il network utilizza **zMenu** per fornire interfacce grafiche sia su Java (tramite GUI tradizionali ad inventario) sia su Bedrock (tramite **Bedrock Forms** native, grazie all'integrazione con Floodgate). I menu sono sincronizzati globalmente tra tutti i server.
+
+| Comando | Esecutore | Azione / Descrizione |
+| :--- | :--- | :--- |
+| `/zmenu open <nome_menu>` | 👤 Giocatore | Apre a schermo il menu specificato (es. `hub_menu`). |
+| `/zmenu reload` | 👑 Admin | Ricarica istantaneamente le configurazioni dei menu senza riavviare il server. |
+
+---
+
+## 🔗 14. Integrazione di Sistema Avanzata (Sviluppatori)
 
 Il network sfrutta **Vault-Updated**, **ExcellentEconomy** e **PlaceholderAPI (PAPI)** come collante universale tra i vari sistemi. Questa architettura permette a scoreboard, script custom e NPC di comunicare con il portafoglio globale dei giocatori in tempo reale e in modo sicuro.
 
-### 13.1. Integrazione PAPI per TAB e Scoreboard
+### 14.1. Integrazione PAPI per TAB e Scoreboard
 Il proxy monta `TAB` e `VelocityScoreboardAPI`. Per far visualizzare dinamicamente il saldo bancario o il ruolo di LuckPerms ai giocatori, si usano i seguenti _placeholders_:
 
 - **Saldo dell'Economia:** `%vault_eco_balance_formatted%` o `%vault_eco_balance%`
@@ -344,7 +362,7 @@ Affinché `TAB` legga questi valori nativamente dal backend, assicurati di aver 
 `/papi ecloud download LuckPerms`
 `/papi reload`
 
-### 13.2. NPC Bancari e Comandi tramite Citizens
+### 14.2. NPC Bancari e Comandi tramite Citizens
 Un'applicazione molto pratica degli NPC di Citizens è trasformarli in entità bancarie interattive. Invece di far digitare comandi ai giocatori (difficile da console o smartphone), puoi associare un comando all'NPC al clic.
 
 **Procedura per creare un NPC "Banchiere":**
@@ -354,7 +372,7 @@ Un'applicazione molto pratica degli NPC di Citizens è trasformarli in entità b
 
 Il flag `-p` fa sì che il comando venga eseguito "come se lo avesse digitato il giocatore" (player context), eseguendo nativamente `/balance` e mostrando il saldo all'utente che lo ha cliccato.
 
-### 13.3. Integrazione Skript e Database Asincrono
+### 14.3. Integrazione Skript e Database Asincrono
 Skript può leggere l'economia globale senza dover creare logiche custom di salvataggio. Usando l'integrazione nativa Skript-Vault, il bilancio è esposto come l'espressione `player's balance`. Qualsiasi modifica fatta via Skript aggiornerà immediatamente il database MySQL di ExcellentEconomy in modo thread-safe.
 
 **Esempio Pratico: Creare un Cartello Bancomat con Skript**
