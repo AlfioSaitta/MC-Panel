@@ -80,6 +80,15 @@ Questa documentazione è dedicata a futuri Agenti (AI) per mantenere coerenza ar
 - **Documentazione Ufficiale MythicMobs:** Per ulteriori implementazioni e chiavi YAML, fare sempre riferimento alla guida ufficiale: [https://git.mythiccraft.io/mythiccraft/MythicMobs/-/wikis/home](https://git.mythiccraft.io/mythiccraft/MythicMobs/-/wikis/home)
 - **Regola di Sviluppo per AI:** Quando si aggiungono nuove opzioni visuali a questo editor, usare `handleCategoryChange` per le strutture nidificate. Tale logica ricrea e serializza l'oggetto in tempo reale via `yaml.dump({lineWidth: -1})`. È vitale eliminare le chiavi quando un valore diventa vuoto/undefined (es. `delete newData[category][field]`) affinché il parser non generi file YAML inquinati da nodi vuoti che causano crash su MythicMobs al reload.
 
+### Q. Disallineamento Variabili Proxy-Backend (PlaceholderAPI)
+- **Sintomo:** Il plugin TAB su Velocity mostrava il testo grezzo delle variabili (es. `%vault_eco_balance%`) invece del vero saldo. I menu di zMenu non renderizzavano il conteggio dei giocatori di Bungee (es. `%bungee_survival%`).
+- **Causa:** PlaceholderAPI viene eseguito nel backend (Paper), quindi TAB (su Velocity) non ha accesso diretto a quei dati. Inoltre, le estensioni necessarie (Vault, Bungee, LuckPerms) non venivano scaricate automaticamente alla creazione del server.
+- **Soluzione:** È stato inserito `TAB-Bridge.jar` in `custom-plugins` per instaurare un canale di comunicazione bidirezionale tra i server e il proxy. Lo script `deploy.sh` è stato potenziato con un processo in background (`nohup sleep 45`) che esegue via `rcon-cli` i comandi `/papi ecloud download` su tutti i nodi, garantendo la risoluzione delle variabili in modo autonomo e state-less.
+
+### R. Upgrade Sicurezza Proxy: Modern Velocity Forwarding
+- **Sintomo:** Il network utilizzava originariamente `BungeeCord` (Legacy) per l'instradamento IP tra Proxy e Backend. Questo metodo è noto per essere limitato e meno sicuro.
+- **Soluzione:** L'infrastruttura è stata completamente migrata a **Modern Velocity Forwarding**. È stato impostato `player-info-forwarding-mode = "modern"` in `velocity.toml` (generando il relativo `forwarding.secret`). Nel file `docker-compose.yml`, i flag `BUNGEECORD` e `SPIGOT_BUNGEECORD` sono stati sostituiti con `PAPER_VELOCITY_SUPPORT` e `PAPER_VELOCITY_SECRET`. Grazie a questo approccio, i backend Paper (Lobby, Survival, ecc.) ricevono UUID nativi, IP reali in modo protocollarmente sicuro e le skin non subiscono latenze di spoofing.
+
 ### L. Gestione Permessi: Rete Globale (Proxy + Backend)
 - **Sintomo Storico:** Comandi da amministratore come `/god` (backend) o `/skin` (proxy) non funzionavano, o i giocatori admin lamentavano di aver perso i privilegi dopo aver provato comandi per i quali mancavano i plugin fisici (es. Citizens/MythicMobs).
 - **Nuova Architettura Permessi:** LuckPerms è ora installato **sia sul nodo Proxy (Velocity) sia su tutti i nodi Backend (Lobby, Survival, ecc.)**. Tutti i nodi sono configurati per leggere dallo stesso database MariaDB (`mc_db`) e si sincronizzano in tempo reale tramite la tabella `luckperms_messenger`.
