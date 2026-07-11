@@ -326,3 +326,48 @@ Molti dei classici comandi "Vanilla" potenziati o comandi di comodità per lo St
 | `/invsee <giocatore>`| 👑 Admin | In alternativa a HuskSync, permette la manipolazione veloce. |
 | `/vanish` o `/v` | 👑 Admin | Rende l'admin completamente invisibile agli altri giocatori. |
 
+---
+
+## 🔗 13. Integrazione di Sistema Avanzata (Sviluppatori)
+
+Il network sfrutta **Vault-Updated**, **ExcellentEconomy** e **PlaceholderAPI (PAPI)** come collante universale tra i vari sistemi. Questa architettura permette a scoreboard, script custom e NPC di comunicare con il portafoglio globale dei giocatori in tempo reale e in modo sicuro.
+
+### 13.1. Integrazione PAPI per TAB e Scoreboard
+Il proxy monta `TAB` e `VelocityScoreboardAPI`. Per far visualizzare dinamicamente il saldo bancario o il ruolo di LuckPerms ai giocatori, si usano i seguenti _placeholders_:
+
+- **Saldo dell'Economia:** `%vault_eco_balance_formatted%` o `%vault_eco_balance%`
+- **Gruppo LuckPerms:** `%luckperms_primary_group_name%`
+- **Prefisso Chat:** `%luckperms_prefix%`
+
+Affinché `TAB` legga questi valori nativamente dal backend, assicurati di aver scaricato i moduli PAPI nei server backend (Lobby, Survival, ecc.) tramite console:
+`/papi ecloud download Vault`
+`/papi ecloud download LuckPerms`
+`/papi reload`
+
+### 13.2. NPC Bancari e Comandi tramite Citizens
+Un'applicazione molto pratica degli NPC di Citizens è trasformarli in entità bancarie interattive. Invece di far digitare comandi ai giocatori (difficile da console o smartphone), puoi associare un comando all'NPC al clic.
+
+**Procedura per creare un NPC "Banchiere":**
+1. Crea l'NPC: `/npc create Banchiere`
+2. Assicurati che sia selezionato: `/npc sel`
+3. Aggiungi il comando al click destro: `/npc command add -p balance`
+
+Il flag `-p` fa sì che il comando venga eseguito "come se lo avesse digitato il giocatore" (player context), eseguendo nativamente `/balance` e mostrando il saldo all'utente che lo ha cliccato.
+
+### 13.3. Integrazione Skript e Database Asincrono
+Skript può leggere l'economia globale senza dover creare logiche custom di salvataggio. Usando l'integrazione nativa Skript-Vault, il bilancio è esposto come l'espressione `player's balance`. Qualsiasi modifica fatta via Skript aggiornerà immediatamente il database MySQL di ExcellentEconomy in modo thread-safe.
+
+**Esempio Pratico: Creare un Cartello Bancomat con Skript**
+Salva questo snippet in `plugins/Skript/scripts/bancomat.sk`:
+```skript
+on right click on a sign:
+    if line 1 of event-block is "[Bancomat]":
+        if player's balance >= 100:
+            remove 100 from player's balance
+            give player 1 of gold ingot named "§eLingotto d'Oro Prelevato"
+            send "§aHai prelevato con successo 100$!" to player
+        else:
+            send "§cNon hai fondi sufficienti sul tuo conto globale." to player
+```
+Poiché l'economia è gestita globalmente da ExcellentEconomy su MySQL, questa transazione Skript in "Lobby" o in "Survival" è istantaneamente sincronizzata con il Proxy e gli altri mondi.
+
