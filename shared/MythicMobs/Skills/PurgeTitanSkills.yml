@@ -1,0 +1,15 @@
+SpawnPurgeArmy:
+  Skills:
+  - summon{mob=PurgeMinion;amount=5;radius=5} @self
+  - summon{mob=PurgeMinion;amount=5;radius=10} @self
+  - summon{mob=PurgeMinion;amount=5;radius=15} @self
+  - summon{mob=PurgeMinion;amount=5;radius=20} @self
+  - summon{mob=PurgeMinion;amount=5;radius=25} @self
+  - effect:sound{s=entity.wither.spawn;v=1.0;p=0.5} @PlayersInRadius{r=100}
+
+PurgeTitanEnd:
+  Skills:
+  - message{m="<mob.name>&f <red>La purificazione e' compiuta. Ritorno al vuoto."} @PlayersInWorld
+  - signal{s=Suicide} @MobsInRadius{r=200;t=PurgeMinion}
+  - effect:explosion @self
+  - remove @self
