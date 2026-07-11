@@ -137,6 +137,9 @@ EOF
 
     echo "🐳 Applico le modifiche all'infrastruttura (se presenti)..."
     docker compose up -d --remove-orphans
+
+    echo "⚙️ Schedulazione automatica download PlaceholderAPI Expansions..."
+    nohup bash -c 'sleep 45; for s in mc_lobby mc_survival mc_creative mc_medioeval mc_motoleo; do docker exec -i \$s rcon-cli "papi ecloud download Bungee" || true; docker exec -i \$s rcon-cli "papi ecloud download Vault" || true; docker exec -i \$s rcon-cli "papi ecloud download LuckPerms" || true; docker exec -i \$s rcon-cli "papi reload" || true; done' >/dev/null 2>&1 &
 EOF
 fi
 
