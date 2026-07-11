@@ -153,6 +153,7 @@ Questa è la mappatura esatta dei container e dei plugin attualmente attivi nell
 | **LibertyBans** (v1.1.4-SNAPSHOT) | Ascoltatore lato backend per l'applicazione delle punizioni. |
 | **LuckPerms** (v5.5.59) | Motore di gestione permessi. Configurazioni mappate allo stesso DB del Proxy per sync globale. |
 | **MythicMobs** (v5.12.1) | Framework avanzato per creare mostri, boss e abilità custom. *(Configurazioni Mobs/Skills/Items condivise globalmente tra tutti i server via mount Docker).* |
+| **Nightcore** (v2.16.3) | Libreria Core e dipendenza fondamentale per il funzionamento di ExcellentEconomy. |
 | **Citizens** (v2.0.43-SNAPSHOT) | API e sistema NPC (NOTA: download protetto, `Citizens-*.jar` va scaricato manualmente da [https://ci.citizensnpcs.co/job/Citizens2/](https://ci.citizensnpcs.co/job/Citizens2/) e inserito nella cartella `custom-plugins`). |
 | **PlaceholderAPI** (v2.12.3) | Sostitutore di variabili dinamiche (PAPI). |
 | **ProtocolLib** (v5.4.0) | Packet API per modifiche profonde a livello client-server. |
