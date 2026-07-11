@@ -49,3 +49,15 @@ aliases:
   - redischat:broadcast $1-
   ignore:
   - redischat:ignore $1-
+  bal:
+  - excellenteconomy:balance $$1-
+  balance:
+  - excellenteconomy:balance $$1-
+  money:
+  - excellenteconomy:balance $$1-
+  pay:
+  - excellenteconomy:pay $$1-
+  eco:
+  - excellenteconomy:eco $$1-
+  baltop:
+  - excellenteconomy:baltop $$1-

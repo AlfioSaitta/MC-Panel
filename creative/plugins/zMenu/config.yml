@@ -1,0 +1,24 @@
+# ==========================================
+# zMenu Global Configuration
+# ==========================================
+
+# 1. Asynchronous processing for performance
+async:
+  placeholders: true
+  inventory: true
+  data: true
+
+# 2. Hook and Integrations
+hooks:
+  placeholderapi: true
+  luckperms: true
+
+# 3. Formatting
+formatting:
+  minimessage: true # Enables <gradient:#ff0000:#00ff00>Text</gradient>
+
+# 4. Cross-Play Geyser / Floodgate Integration
+geyser:
+  enabled: true
+  # Render menus as native Bedrock Forms instead of Java Chest GUIs
+  bedrock-forms: true

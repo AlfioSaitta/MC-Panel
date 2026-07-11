@@ -53,6 +53,7 @@ Il network è pre-configurato con una suite essenziale di plugin moderni, divisi
 | **HuskSync** (v4.0.0) | Sincronizzazione automatica inventari, salute e avanzamenti a database. |
 | **RedisChat** (v5.5.17) | Chat globale unificata tra tutti i mondi. |
 | **ViaBackwards** (v5.10.0) & **ViaVersion** (v5.10.0) | Compatibilità di connessione per client vecchi o futuri. |
+| **zMenu** (v1.1.1.4) | Gestore avanzato di menu grafici con integrazione cross-play (Bedrock Forms). |
 
 #### 3. Plugin Esclusivi LOBBY - Cartella `lobby/plugins/`
 > **⚠ REGOLA CRITICA**: Lo script di deploy è programmato per **CANCELLARE** forzatamente qualsiasi `.jar` di AuthMe dagli altri server di backend, prevenendo auth-bypass. **AuthMe deve girare solo ed esclusivamente sulla Lobby.**

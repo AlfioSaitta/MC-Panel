@@ -1,0 +1,53 @@
+# ==========================================
+# /hub_menu - Network Navigator
+# ==========================================
+commands:
+  - "servers"
+  - "menu"
+name: "<gradient:#ff0000:#00ff00>Network Menu</gradient>"
+size: 27
+# Specifica che questo menu si comporterà come form su Bedrock
+bedrock-form:
+  title: "Network Menu"
+  type: simple
+
+items:
+  survival:
+    slot: 11
+    item:
+      material: GRASS_BLOCK
+      name: "<green>🌲 Survival</green>"
+      lore:
+        - "<gray>Giocatori online: <white>%bungee_survival%</white></gray>"
+        - ""
+        - "<yellow>Clicca per connetterti!</yellow>"
+    # Bedrock native form button configuration
+    bedrock-form:
+      text: "🌲 Survival
+[%bungee_survival% Giocatori]"
+    actions:
+      - "console: server %player_name% survival"
+      - "close:"
+      
+  profilo:
+    slot: 13
+    item:
+      material: PLAYER_HEAD
+      name: "<gold>👤 Profilo Utente</gold>"
+      lore:
+        - "<gray>Nome: <white>%player_name%</white></gray>"
+        - "<gray>Grado: <white>%luckperms_primary_group_name%</white></gray>"
+        - "<gray>Bilancio: <white>%vault_eco_balance_formatted%</white></gray>"
+    bedrock-form:
+      text: "👤 Profilo
+%luckperms_primary_group_name% - %vault_eco_balance_formatted%"
+      
+  chiudi:
+    slot: 15
+    item:
+      material: BARRIER
+      name: "<red>❌ Chiudi</red>"
+    bedrock-form:
+      text: "❌ Chiudi"
+    actions:
+      - "close:"

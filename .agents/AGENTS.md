@@ -161,6 +161,7 @@ Questa è la mappatura esatta dei container e dei plugin attualmente attivi nell
 | **Skript** (v2.15.4) & **skript-worldguard** (v1.0.1) | Linguaggio di scripting in-game e integrazioni per le regioni. |
 | **Vault-Updated** (v2.0.0) & **ExcellentEconomy** (v2.8.0) | Interfaccia ed engine del sistema di Economia centralizzata. |
 | **worldedit** (v7.4.4-beta) & **worldguard** (v7.0.17) | Sistemi di building massivo e protezione anti-griefing del territorio. |
+| **zMenu** (v1.1.1.4) | Gestore avanzato di menu grafici con integrazione cross-play (Bedrock Forms) e MiniMessage. |
 | **bluemap-paper** (v5.22) | Rendering della web-map 3D in tempo reale. |
 | **HuskSync** (v4.0.0) | Sincronizzazione automatica inventari, salute e avanzamenti a database. |
 | **RedisChat** (v5.5.17) | Chat globale unificata tra tutti i mondi. |
