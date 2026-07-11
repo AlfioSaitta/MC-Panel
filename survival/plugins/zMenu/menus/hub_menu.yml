@@ -25,6 +25,7 @@ items:
     bedrock-form:
       text: "🌲 Survival
 [%bungee_survival% Giocatori]"
+      icon: "textures/items/diamond_sword"
     actions:
       - "console: server %player_name% survival"
       - "close:"

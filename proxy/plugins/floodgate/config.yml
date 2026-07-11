@@ -1,0 +1,8 @@
+username-prefix: "*"
+replace-spaces: true
+default-locale: en_US
+player-link:
+  enabled: true
+  enable-own-linking: true
+  enable-global-linking: true
+  link-code-timeout: 300

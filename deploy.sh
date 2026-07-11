@@ -124,6 +124,13 @@ EOF
   echo "3️⃣ Configurazione plugin e avvio dei server Minecraft (Docker)..."
   ssh -i $SSH_KEY_PATH $VPS_USER@$VPS_IP << EOF
     cd $SERVER_DIR
+    
+    echo "🔐 Configurazione AuthMe per Geyser/Floodgate..."
+    if [ -f "$SERVER_DIR/lobby/plugins/AuthMe/config.yml" ]; then
+      sed -i "s/allowedNicknameCharacters: '\[a-zA-Z0-9_\]\*'/allowedNicknameCharacters: '\[a-zA-Z0-9_\*\]\*'/g" $SERVER_DIR/lobby/plugins/AuthMe/config.yml
+      sed -i "s/floodgate: false/floodgate: true/g" $SERVER_DIR/lobby/plugins/AuthMe/config.yml
+    fi
+
     echo "🐳 Applico le modifiche all'infrastruttura (se presenti)..."
     docker compose up -d --remove-orphans
 EOF
