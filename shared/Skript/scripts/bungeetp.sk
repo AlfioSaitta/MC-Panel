@@ -1,0 +1,5 @@
+command /bungeetp <player> <text>:
+    executable by: console
+    permission: op
+    trigger:
+        connect arg-1 to server arg-2
