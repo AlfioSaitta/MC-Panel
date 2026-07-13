@@ -1,0 +1,12 @@
+storage:
+  type: MYSQL
+  host: "__MYSQL_HOST__"
+  port: __MYSQL_PORT__
+  database: "__MYSQL_DB__"
+  username: "__MYSQL_USER__"
+  password: "__MYSQL_PASSWORD__"
+  tablePrefix: "sp_"
+teleport:
+  preserveInertia: true
+  preserveVehicle: true
+  preserveVelocity: true

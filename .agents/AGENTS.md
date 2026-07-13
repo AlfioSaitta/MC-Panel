@@ -61,8 +61,11 @@ Questa documentazione è dedicata a futuri Agenti (AI) per mantenere coerenza ar
 - **Soluzione:** Velocity supporta nativamente il reinstradamento dei giocatori in caso di server down o crash configurando `failover-on-unexpected-server-disconnect = true` nel `velocity.toml`. Di conseguenza, `SimpleReconnect` è stato eliminato per sempre. Inoltre, i plugin `ViaVersion` e `ViaBackwards` sono stati spostati dal proxy ai singoli server backend (nella cartella `custom-plugins/` gestita dallo script di deploy) per prevenire conflitti. `deploy.sh` è stato aggiornato per pulire forzatamente questi file `.jar` dal proxy per evitare reintroduzioni accidentali.
 
 ### M. Risoluzione Conflitti Comandi Bukkit (LibertyBans / RedisChat vs EssentialsX)
-- **Sintomo:** Plugin come EssentialsX e CMI sovrascrivono nativamente i comandi di punizione (es. `/ban`) o messaggistica privata (es. `/msg`), impedendo il funzionamento globale di LibertyBans e RedisChat.
-- **Soluzione:** È stato creato un file `shared/commands.yml` nel repository, che definisce gli `aliases` (es. `msg: - redischat:msg $1-`, `ban: - libertybans:ban $1-`). Lo script `deploy.sh` sincronizza questo file in tutti i backend server (lobby, survival, creative, ecc.). Bukkit dà sempre la priorità a `commands.yml`, aggirando l'hardcoding dei plugin e garantendo coerenza globale senza dover configurare manualmente i config di EssentialsX su ogni server.
+- **Sintomo:** Plugin come EssentialsX e CMI sovrascrivono nativamente i comandi di punizione (es. `/ban`) o messaggistica privata (es. `/msg`), impedendo il funzionamento globale di LibertyBans e RedisChat. Inoltre Essentials registra le sue route prima di LibertyBans.
+- **Soluzione (Tripla Manovra):**
+  1. **Comandi Rigidi:** È stato creato e iniettato un file `shared/commands.yml` che reindirizza forzatamente i comandi al namespace (es. `ban: - libertybans:ban $$1-`). Il flag `$$1-` preserva interi argomenti come i motivi del ban.
+  2. **Priorità di Caricamento:** Lo script `deploy.sh` scompatta in tempo reale `LibertyBans.jar` e inietta `loadbefore: [Essentials]` nel suo `plugin.yml`, costringendo il server ad avviare LibertyBans e bloccare la rotta prima che Essentials la occupi.
+  3. **Disabilitazione Pulita:** `deploy.sh` inietta programmaticamente i comandi (`ban`, `mute`, ecc.) nella lista `disabled-commands` del `config.yml` di EssentialsX su tutti i backend.
 
 ### N. Bug Skript: Caricamento Aliases Asincrono (Severe Error)
 - **Sintomo:** Durante riavvii massivi del network, Skript smette di riconoscere oggetti base di Minecraft (es. "Can't understand this structure: on right click with compass"), stampando un "Severe Error" in console al momento del boot.
@@ -86,13 +89,24 @@ Questa documentazione è dedicata a futuri Agenti (AI) per mantenere coerenza ar
 - **Soluzione:** È stato inserito `TAB-Bridge.jar` in `custom-plugins` per instaurare un canale di comunicazione bidirezionale tra i server e il proxy. Lo script `deploy.sh` è stato potenziato con un processo in background (`nohup sleep 45`) che esegue via `rcon-cli` i comandi `/papi ecloud download` su tutti i nodi, garantendo la risoluzione delle variabili in modo autonomo e state-less.
 
 ### R. Upgrade Sicurezza Proxy: Modern Velocity Forwarding
-- **Sintomo:** Il network utilizzava originariamente `BungeeCord` (Legacy) per l'instradamento IP tra Proxy e Backend. Questo metodo è noto per essere limitato e meno sicuro.
-- **Soluzione:** L'infrastruttura è stata completamente migrata a **Modern Velocity Forwarding**. È stato impostato `player-info-forwarding-mode = "modern"` in `velocity.toml` (generando il relativo `forwarding.secret`). Nel file `docker-compose.yml`, i flag `BUNGEECORD` e `SPIGOT_BUNGEECORD` sono stati sostituiti con `PAPER_VELOCITY_SUPPORT` e `PAPER_VELOCITY_SECRET`. Grazie a questo approccio, i backend Paper (Lobby, Survival, ecc.) ricevono UUID nativi, IP reali in modo protocollarmente sicuro e le skin non subiscono latenze di spoofing.
+- **Sintomo Storico:** Il network utilizzava originariamente `BungeeCord` (Legacy) per l'instradamento IP tra Proxy e Backend.
+- **Configurazione Docker:** Nel file `docker-compose.yml`, i flag `BUNGEECORD` e `SPIGOT_BUNGEECORD` sono stati rimossi/impostati a `"false"` e sostituiti con `PAPER_VELOCITY_SUPPORT` e `PAPER_VELOCITY_SECRET`.
+- **Problema 1 (If you wish to use IP forwarding...):** Dopo l'aggiornamento, i backend Paper rifiutavano le connessioni poiché il file `spigot.yml` locale manteneva in cache `settings.bungeecord: true`. L'immagine Docker (`itzg`) non sovrascrive a ritroso il file. È stato necessario applicare un `sed -i` per forzare `bungeecord: false` in tutti gli `spigot.yml` della VPS.
+- **Problema 2 (Your server did not send a forwarding request...):** I backend Paper non confermavano il forwarding perché `config/paper-global.yml` continuava ad avere `velocity.enabled: false` e il secret vuoto, nonostante i flag nel `docker-compose.yml`. Si è reso necessario uno script Python per iniettare `enabled: true`, `online-mode: false` e `secret: 'S3cr3tV3locityF0rw4rdingK3y!'` in tutti i `paper-global.yml` dei server di backend sulla VPS.
 
 ### S. Crash di Sistema (NoSuchMethodError - Adventure API)
-- **Sintomo:** Geyser (e in precedenza LibertyBans) impedisce l'avvio del proxy Velocity, restituendo in console l'errore bloccante: `java.lang.NoSuchMethodError: 'net.kyori.adventure.text.serializer.gson.GsonComponentSerializer.toBuilder()'`.
-- **Causa:** Le recenti build di Velocity (`3.5.0+`) hanno aggiornato le dipendenze interne dell'API di testo `Kyori Adventure`, rimuovendo o rinominando metodi critici. I plugin esistenti compilati su Adventure precedenti non riescono più a trovare questi metodi, mandando in crash l'intero thread del plugin durante l'evento `ProxyInitializeEvent` o `ListenerBoundEvent`.
-- **Soluzione:** È stata rimossa la flag `VELOCITY_VERSION: LATEST` dal file `docker-compose.yml`, bloccando esplicitamente la versione a `VELOCITY_VERSION: "3.4.0-SNAPSHOT"`. Questa è l'ultima release stabile e consolidata che mantiene retrocompatibilità con l'API Adventure usata da Geyser e dagli altri core proxy, pur restando pienamente compatibile con l'inoltro dei giocatori per Minecraft 1.21+.
+- **Sintomo:** Geyser impedisce l'avvio del proxy Velocity 3.5+, restituendo in console l'errore bloccante: `java.lang.NoSuchMethodError: 'net.kyori.adventure.text.serializer.gson.GsonComponentSerializer.toBuilder()'`.
+- **Causa:** Le recenti build di Velocity (`3.5.0+`) hanno aggiornato le dipendenze interne dell'API di testo `Kyori Adventure`, rimuovendo o rinominando metodi critici. Geyser-Velocity (essendo compilato su vecchie build) andava in crash irreversibile.
+- **Soluzione Definitiva (Geyser Standalone):** Per garantire l'uso di Velocity 3.5.1, Geyser è stato rimosso dalla cartella plugin di Velocity ed è stato istanziato come container Docker autonomo (`mc_geyser` su `19132/udp`). Tramite le variabili d'ambiente in `docker-compose.yml`, è configurato per tradurre i pacchetti Bedrock e inoltrarli internamente a `velocity:25577` mantenendo l'autenticazione Floodgate. In questo modo Geyser gira nella propria JVM ed è immune alle breaking changes dell'API Adventure di Velocity.
+
+### T. Sincronizzazione Pulita dei file .jar (Proxy e Lobby)
+- **Sintomo:** I deploy successivi causavano l'accumulo di vecchi file `.jar` nelle cartelle `proxy/plugins` e `lobby/plugins` (es. `AuthMe-5.6.0` accanto a `AuthMe-5.6.1`), causando crash per nomi di plugin ambigui ("Ambiguous plugin name").
+- **Causa:** L'utilizzo di `rsync` senza il flag `--delete` faceva sì che i vecchi file rimanessero sulla VPS. Tuttavia, non si poteva usare `--delete` sull'intera cartella pena la perdita dei database e dei file config generati dai server in remoto.
+- **Soluzione:** In `deploy.sh` è stata aggiunta una regola `rsync` iper-selettiva: `rsync -az --include="*.jar" --exclude="*" --delete`. Questo comando istruisce rsync ad allineare *esclusivamente* i file `.jar`, cancellando i vecchi binari obsoleti ma preservando intoccati tutti gli altri dati e le configurazioni YAML/SQLite sulla VPS.
+
+### U. Sicurezza Geografica AuthMe (GeoLite2)
+- **Sintomo:** Avviso `No MaxMind credentials found` e `Could not download GeoLiteAPI database` all'avvio della Lobby, con conseguente disabilitazione della protezione GeoIP.
+- **Soluzione:** È stata aggiunta un'istruzione in `deploy.sh` che scarica automaticamente, tramite `curl`, l'ultimo database aggiornato `GeoLite2-Country.mmdb` dalla repository `du5/geoip` posizionandolo dinamicamente nella cartella remota di AuthMe ad ogni esecuzione, senza necessità di fornire le credenziali utente a MaxMind.
 
 ### L. Gestione Permessi: Rete Globale (Proxy + Backend)
 - **Sintomo Storico:** Comandi da amministratore come `/god` (backend) o `/skin` (proxy) non funzionavano, o i giocatori admin lamentavano di aver perso i privilegi dopo aver provato comandi per i quali mancavano i plugin fisici (es. Citizens/MythicMobs).
@@ -103,7 +117,7 @@ Questa documentazione è dedicata a futuri Agenti (AI) per mantenere coerenza ar
 1. **Mai sovrascrivere `ONLINE_MODE="true"` nei server backend (Paper).** L'autenticazione è gestita dal Proxy Velocity o AuthMe. Mettere a `true` rompe l'ingresso dietro proxy.
 2. **Web Panel Auth Secret:** Se viene ricreato l'ambiente, il file `.env` deve contenere una password cripticamente sicura e `AUTH_SECRET` non indovinabile. Il Rate Limit previene il brute-force ed è cablato in memoria nel container Next.js.
 3. **Mappatura del Socket Docker e ServiceManager:** Il Web Panel richiede `/var/run/docker.sock` mappato come volume nel suo container. I comandi verso docker NON devono essere script bash via `exec`, ma devono obbligatoriamente utilizzare il `DockerServiceClient` richiamato dal `ServiceManager` per l'orchestrazione sicura dei nodi docker. Parimenti, le comunicazioni di console avvengono via RCON puro tramite `RconServiceClient`.
-4. **Ambiente di Sviluppo vs Produzione:** In locale (questo ambiente) eseguiamo solo lo sviluppo del codice. Tutti i test operativi vengono eseguiti sulla VPS (deploy). Non eseguire comandi di test o installazioni invasive (es. npm install di pacchetti non puramente di dev) localmente; forza l'esecuzione di questi task all'ambiente VPS tramite script di deploy.
+4. **Ambiente di Sviluppo vs Produzione (Connessione ai Container):** In locale (questo ambiente) eseguiamo solo lo sviluppo del codice. Tutti i test operativi e l'esecuzione dei container Docker avvengono **sempre e solo sulla VPS di produzione (tramite script di deploy o via SSH)**. L'Agente AI **non deve MAI tentare di eseguire `docker exec` o ispezionare container sulla macchina locale**, poiché i container reali sono ospitati sul server remoto. Qualsiasi interazione diretta per debug deve avvenire usando SSH (es. `ssh -i $SSH_KEY_PATH $VPS_USER@$VPS_IP "docker exec ..."`). Non eseguire comandi di test o installazioni invasive localmente.
 
 ## 4. Next.js App Router (Avviso per Agenti AI)
 This version of Next.js has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
@@ -134,6 +148,7 @@ Questa è la mappatura esatta dei container e dei plugin attualmente attivi nell
 ### Architettura Container (Docker)
 | Container | Ruolo / Tipo | Descrizione & Entrypoint |
 | :--- | :--- | :--- |
+| `mc_geyser` | Proxy Bedrock | Container standalone che traduce il traffico Bedrock (19132 UDP) e lo invia internamente al proxy Velocity. |
 | `velocity` | Proxy di Rete | Nodo di ingresso primario (porta 25565). Gestisce routing e UUID. |
 | `mc_lobby` | Server Paper | Hub principale d'ingresso. Contiene AuthMe per il login offline. |
 | `mc_survival`, `mc_creative`<br>`mc_motoleo`, `mc_medioeval` | Server Paper | Server backend di gioco. Generati e gestiti dinamicamente via template/hot-swap. |
@@ -148,9 +163,8 @@ Questa è la mappatura esatta dei container e dei plugin attualmente attivi nell
 #### 1. Proxy (Velocity) - Cartella `proxy/plugins/`
 | Plugin | Funzionalità Principale |
 | :--- | :--- |
-| **AdvancedPortals** (v2.8.0) | Gestione del routing fisico tra server (portali fluidi). |
 | **AuthMeVelocity-Proxy** (v4.0.1)<br>**AuthMeVelocity-LastServerAddon** (v1.1.1) | Hook del login AuthMe e redirect automatico all'ultimo server frequentato. |
-| **Geyser-Velocity** & **Floodgate** | Traduttore di pacchetti per consentire l'ingresso ai giocatori da Minecraft Bedrock Edition (Console, Mobile, Win10). |
+| **Floodgate** (v2.2.5-SNAPSHOT) | Gestisce l'autenticazione pacchetti per i giocatori da Minecraft Bedrock Edition. *(Nota: Geyser non è più un plugin ma gira in un container separato).* |
 | **LuckPerms-Velocity** (v5.5.59) | Gestore ruoli e permessi a livello di rete. |
 | **SkinsRestorer** (v15.12.4) | Ripristina le skin dei giocatori offline/cracked. |
 | **TAB** (v6.1.0) & **VelocityScoreboardAPI** (v2.1.0) | Personalizzazione estetica dell'HUD (Tablist, Tag sopra la testa). |
@@ -161,13 +175,14 @@ Questa è la mappatura esatta dei container e dei plugin attualmente attivi nell
 
 | Plugin | Funzionalità Principale |
 | :--- | :--- |
-| **BetterGrim** (GrimAC v2.3.74) | Sistema Anti-cheat. |
-| **BungeeTP** (v1.0) | Motore di teletrasporto cross-server. |
+| **BetterGrim** (v2.3.74-a3a95cc) | Sistema Anti-cheat. |
+| **HuskHomes** (v4.10) | Motore di teletrasporto cross-server sincronizzato via MariaDB e Redis. Gestisce sethome, warp, tpa. |
+| **SimplePortals** (v1.0.4) | Gestore di portali fisici per l'attraversamento fluido tra i mondi (preserva veicoli e inerzia). |
 | **CommandAPI** (v11.2.0) | Astrazione API per la registrazione di comandi avanzati. |
 | **EssentialsX** (v2.22.0) | Motore di comandi base di Minecraft (es. /god, /fly, /heal). |
-| **LibertyBans** (v1.1.4-SNAPSHOT) | Ascoltatore lato backend per l'applicazione delle punizioni. |
-| **LuckPerms** (v5.5.59) | Motore di gestione permessi. Configurazioni mappate allo stesso DB del Proxy per sync globale. |
-| **MythicMobs** (v5.12.1) | Framework avanzato per creare mostri, boss e abilità custom. *(Configurazioni Mobs/Skills/Items condivise globalmente tra tutti i server via mount Docker).* |
+| **LibertyBans** (v1.1.4) | Ascoltatore lato backend per l'applicazione delle punizioni. |
+| **LuckPerms-Bukkit** (v5.5.59) | Motore di gestione permessi. Configurazioni mappate allo stesso DB del Proxy per sync globale. |
+| **MythicMobs** (v5.12.1-46bae256) | Framework avanzato per creare mostri, boss e abilità custom. *(Configurazioni Mobs/Skills/Items condivise globalmente tra tutti i server via mount Docker).* |
 | **Nightcore** (v2.16.3) | Libreria Core e dipendenza fondamentale per il funzionamento di ExcellentEconomy. |
 | **Citizens** (v2.0.43-SNAPSHOT) | API e sistema NPC (NOTA: download protetto, `Citizens-*.jar` va scaricato manualmente da [https://ci.citizensnpcs.co/job/Citizens2/](https://ci.citizensnpcs.co/job/Citizens2/) e inserito nella cartella `custom-plugins`). |
 | **PlaceholderAPI** (v2.12.3) | Sostitutore di variabili dinamiche (PAPI). |
@@ -175,18 +190,19 @@ Questa è la mappatura esatta dei container e dei plugin attualmente attivi nell
 | **SentientMobs** (v2.3.1) | Sostituisce l'intelligenza artificiale (AI) di default per rendere i mostri strategici. |
 | **Skript** (v2.15.4) & **skript-worldguard** (v1.0.1) | Linguaggio di scripting in-game e integrazioni per le regioni. |
 | **Vault-Updated** (v2.0.0) & **ExcellentEconomy** (v2.8.0) | Interfaccia ed engine del sistema di Economia centralizzata. |
-| **worldedit** (v7.4.4-beta) & **worldguard** (v7.0.17) | Sistemi di building massivo e protezione anti-griefing del territorio. |
+| **worldedit** (v7.4.4-beta-01) & **worldguard** (v7.0.17) | Sistemi di building massivo e protezione anti-griefing del territorio. |
 | **zMenu** (v1.1.1.4) | Gestore avanzato di menu grafici con integrazione cross-play (Bedrock Forms) e MiniMessage. |
 | **bluemap-paper** (v5.22) | Rendering della web-map 3D in tempo reale. |
-| **HuskSync** (v4.0.0) | Sincronizzazione automatica inventari, salute e avanzamenti a database. |
+| **HuskSync** (v4.0.0-ba1d17e) | Sincronizzazione automatica inventari, salute e avanzamenti a database. |
 | **RedisChat** (v5.5.17) | Chat globale unificata tra tutti i mondi. |
 | **ViaBackwards** (v5.10.0) & **ViaVersion** (v5.10.0) | Compatibilità di connessione per client vecchi o futuri. |
 | **TAB-Bridge** (v6.2.2) | Ponte necessario per inviare i Placeholders dal backend a TAB sul Proxy. |
+| **floodgate-bukkit** (v2.2.5-SNAPSHOT) | Backend side of Floodgate for Bedrock compatibility. |
 
 #### 3. Plugin Esclusivi LOBBY - Cartella `lobby/plugins/`
 > **⚠ REGOLA CRITICA**: Lo script di deploy è programmato per **CANCELLARE** forzatamente qualsiasi `.jar` di AuthMe dagli altri server di backend, prevenendo auth-bypass. **AuthMe deve girare solo ed esclusivamente sulla Lobby.**
 
 | Plugin | Funzionalità Principale |
 | :--- | :--- |
-| **AuthMe** (v5.6.0-beta2) | Core di registrazione e login per reti offline/cracked. |
+| **AuthMe** (v5.6.0-beta2-b2453) | Core di registrazione e login per reti offline/cracked. |
 | **AuthMeVelocity-Paper** (v4.3.0) | Invia il segnale "*login avvenuto con successo*" al Proxy Velocity. |

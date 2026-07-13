@@ -1,54 +1,7 @@
 command-block-overrides: []
 ignore-vanilla-permissions: false
 aliases:
-  ban:
-  - libertybans:ban $$1-
-  unban:
-  - libertybans:unban $$1-
-  mute:
-  - libertybans:mute $$1-
-  unmute:
-  - libertybans:unmute $$1-
-  kick:
-  - libertybans:kick $$1-
-  banip:
-  - libertybans:banip $$1-
-  unbanip:
-  - libertybans:unbanip $$1-
-  tempban:
-  - libertybans:tempban $$1-
-  tempmute:
-  - libertybans:tempmute $$1-
-  warn:
-  - libertybans:warn $$1-
-  history:
-  - libertybans:history $$1-
-  alts:
-  - libertybans:alts $$1-
-  msg:
-  - redischat:msg $1-
-  w:
-  - redischat:msg $1-
-  m:
-  - redischat:msg $1-
-  t:
-  - redischat:msg $1-
-  pm:
-  - redischat:msg $1-
-  tell:
-  - redischat:msg $1-
-  whisper:
-  - redischat:msg $1-
-  reply:
-  - redischat:reply $1-
-  r:
-  - redischat:reply $1-
-  broadcast:
-  - redischat:broadcast $1-
-  bc:
-  - redischat:broadcast $1-
-  ignore:
-  - redischat:ignore $1-
+
   bal:
   - excellenteconomy:balance $$1-
   balance:
@@ -61,3 +14,43 @@ aliases:
   - excellenteconomy:eco $$1-
   baltop:
   - excellenteconomy:baltop $$1-
+  home:
+  - huskhomes:home $$1-
+  sethome:
+  - huskhomes:sethome $$1-
+  delhome:
+  - huskhomes:delhome $$1-
+  homes:
+  - huskhomes:homes $$1-
+  warp:
+  - huskhomes:warp $$1-
+  warps:
+  - huskhomes:warps $$1-
+  setwarp:
+  - huskhomes:setwarp $$1-
+  delwarp:
+  - huskhomes:delwarp $$1-
+  tpa:
+  - huskhomes:tpa $$1-
+  tpaccept:
+  - huskhomes:tpaccept $$1-
+  tpdeny:
+  - huskhomes:tpdeny $$1-
+  tpahere:
+  - huskhomes:tpahere $$1-
+  spawn:
+  - huskhomes:spawn $$1-
+  ban:
+  - libertybans:ban $$1-
+  mute:
+  - libertybans:mute $$1-
+  kick:
+  - libertybans:kick $$1-
+  unban:
+  - libertybans:unban $$1-
+  unbanip:
+  - libertybans:unbanip $$1-
+  tempban:
+  - libertybans:tempban $$1-
+  tempmute:
+  - libertybans:tempmute $$1-

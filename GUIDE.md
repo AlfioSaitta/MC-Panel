@@ -39,10 +39,10 @@ flowchart TD
     end
 
     Proxy -->|Login Obbligatorio| Lobby
-    Lobby -->|BungeeTP / Portals| Survival
-    Lobby -->|BungeeTP / Portals| Creative
-    Lobby -->|BungeeTP / Portals| Moto
-    Lobby -->|BungeeTP / Portals| Medioeval
+    Lobby -->|HuskHomes / SimplePortals| Survival
+    Lobby -->|HuskHomes / SimplePortals| Creative
+    Lobby -->|HuskHomes / SimplePortals| Moto
+    Lobby -->|HuskHomes / SimplePortals| Medioeval
 
     subgraph Data Layer
         DB[("MariaDB")]
@@ -115,14 +115,21 @@ Il network supporta l'accesso nativo per i giocatori da **Minecraft Bedrock Edit
 
 | Comando | Esecutore | Azione / Descrizione |
 | :--- | :--- | :--- |
-| `/ban <giocatore> [tempo] [motivo]` | 🛡️ Staff | Es: `/ban Marco 2d Griefing`. |
-| `/mute <giocatore> [tempo] [motivo]`| 🛡️ Staff | Silenzia il giocatore nella chat. |
+| `/ban <giocatore> [motivo]` | 🛡️ Staff | Banna permanentemente un giocatore (Es: `/ban Marco Griefing`). |
+| `/tempban <giocatore> <tempo> [motivo]` | 🛡️ Staff | Banna temporaneamente (Es: `/tempban Marco 2d Uso di Hack`). |
+| `/mute <giocatore> [motivo]`| 🛡️ Staff | Silenzia permanentemente il giocatore nella chat globale. |
+| `/tempmute <giocatore> <tempo> [motivo]`| 🛡️ Staff | Silenzia temporaneamente il giocatore. |
 | `/kick <giocatore> [motivo]` | 🛡️ Staff | Espelle momentaneamente dal network. |
+| `/unban <giocatore>` / `/unmute <giocatore>` | 🛡️ Staff | Revoca un ban o un mute precedentemente assegnato. |
 | `/history <giocatore>` | 🛡️ Staff | Apre una dashboard GUI (interfaccia) con lo storico sanzioni. |
-| `/alts <giocatore>` | 🛡️ Staff | Cerca altri account connessi dallo stesso IP per prevenire elusioni. |
+| `/alts <giocatore>` | 🛡️ Staff | Cerca account connessi dallo stesso IP per prevenire elusioni. |
 
 ### Sicurezza (BetterGrim)
 Nessun comando necessario! L'anticheat agisce in modo passivo e asincrono per prevenire cheat (Speed, Killaura) bloccando le iterazioni a livello di protocollo.
+
+> [!TIP]
+> **Protezione GeoIP (AuthMe)**
+> La Lobby analizza automaticamente l'indirizzo IP dei giocatori confrontandolo con un database GeoIP aggiornato automaticamente a ogni deploy, fornendo una barriera extra contro bot e account esteri sospetti.
 
 ---
 
@@ -159,16 +166,16 @@ La chat è potenziata da **RedisChat**, garantendo una comunicazione fluida senz
 ```mermaid
 flowchart LR
     Player(("Giocatore"))
-    Portal["Portale Fisico<br>AdvancedPortals"]
+    Portal["Portale Fisico<br>SimplePortals"]
     Command["Comando Chat<br>/server o /tpa"]
     
     Player -->|Attraversa| Portal
     Player -->|Digita| Command
-    Portal -.->|BungeeTP| Destination[("Server Destinazione")]
-    Command -.->|BungeeTP| Destination
+    Portal -.->|HuskHomes| Destination[("Server Destinazione")]
+    Command -.->|HuskHomes| Destination
 ```
 
-### Spostamenti Diretti (BungeeTP)
+### Spostamenti Diretti (HuskHomes)
 
 | Comando | Esecutore | Azione / Descrizione |
 | :--- | :--- | :--- |
@@ -177,14 +184,14 @@ flowchart LR
 | `/tpaccept` | 👤 Giocatore | Accetta la richiesta TPA. |
 | `/tp <giocatore>` | 👑 Admin | Teletrasporto silenzioso bypassando le richieste. |
 
-### Portali Fisici (AdvancedPortals)
+### Portali Fisici (SimplePortals)
 
 > [!NOTE]
-> Per costruire i portali dimensionali, bisogna sempre sfruttare l'ascia magica di WorldEdit (`//wand`).
+> Per costruire i portali dimensionali, utilizza l'ascia magica di WorldEdit (`//wand`).
 
-1. Seleziona i punti in cui vuoi che avvenga l'attivazione.
-2. Esegui: `/portal create <nomeportale> bungeecord <nomedestinazione>`.
-3. Attraversare il portale ti scaglierà direttamente nel server indicato (es. `survival`).
+1. Seleziona l'area del portale.
+2. Esegui: `/portals create <nomeportale> <nomedestinazione>`.
+3. Attraversare il portale ti scaglierà direttamente nel server indicato in modo fluido.
 
 ---
 

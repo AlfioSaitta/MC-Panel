@@ -42,6 +42,23 @@ items:
     bedrock-form:
       text: "👤 Profilo
 %luckperms_primary_group_name% - %vault_eco_balance_formatted%"
+
+  teleport:
+    slot: 14
+    item:
+      material: COMPASS
+      name: "<aqua>🧭 I Miei Teletrasporti</aqua>"
+      lore:
+        - "<gray>Gestisci le tue case e i warp.</gray>"
+        - ""
+        - "<yellow>Clicca per aprire!</yellow>"
+    bedrock-form:
+      text: "🧭 Teletrasporti"
+      icon: "textures/items/compass"
+    actions:
+      - "player: huskhomes:homes"
+      - "close:"
+      
       
   chiudi:
     slot: 15

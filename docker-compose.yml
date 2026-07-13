@@ -6,6 +6,7 @@ services:
     image: mariadb:10.11
     container_name: mc_db
     restart: always
+    command: --max-connections=1000
     environment:
       MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
       MYSQL_DATABASE: "minecraft"
@@ -87,6 +88,7 @@ services:
       ONLINE_MODE: "false" # Deve essere false dietro un proxy!
       PAPER_VELOCITY_SUPPORT: "true"
       PAPER_VELOCITY_SECRET: "S3cr3tV3locityF0rw4rdingK3y!"
+      SPIGOT_BUNGEECORD: "false"
       MODE: "adventure"
       FORCE_GAMEMODE: "true"
       ENFORCE_SECURE_PROFILE: "false"
@@ -127,6 +129,7 @@ services:
       ONLINE_MODE: "false" # Deve essere false dietro un proxy!
       PAPER_VELOCITY_SUPPORT: "true"
       PAPER_VELOCITY_SECRET: "S3cr3tV3locityF0rw4rdingK3y!"
+      SPIGOT_BUNGEECORD: "false"
       ENFORCE_SECURE_PROFILE: "false"
       ENABLE_RCON: "true"
       RCON_PASSWORD: "${RCON_PASSWORD}"
@@ -165,6 +168,7 @@ services:
       ONLINE_MODE: "false"
       PAPER_VELOCITY_SUPPORT: "true"
       PAPER_VELOCITY_SECRET: "S3cr3tV3locityF0rw4rdingK3y!"
+      SPIGOT_BUNGEECORD: "false"
       MODE: "creative"
       FORCE_GAMEMODE: "true"
       ENFORCE_SECURE_PROFILE: "false"
@@ -201,6 +205,7 @@ services:
       ONLINE_MODE: "FALSE"
       PAPER_VELOCITY_SUPPORT: "true"
       PAPER_VELOCITY_SECRET: "S3cr3tV3locityF0rw4rdingK3y!"
+      SPIGOT_BUNGEECORD: "false"
       EXTRA_ARGS: "--safeMode"
       ENFORCE_SECURE_PROFILE: "false"
       ENABLE_RCON: "true"
@@ -234,6 +239,7 @@ services:
       ONLINE_MODE: "FALSE"
       PAPER_VELOCITY_SUPPORT: "true"
       PAPER_VELOCITY_SECRET: "S3cr3tV3locityF0rw4rdingK3y!"
+      SPIGOT_BUNGEECORD: "false"
       ENFORCE_SECURE_PROFILE: "false"
       ENABLE_RCON: "true"
       RCON_PASSWORD: "${RCON_PASSWORD}"
@@ -310,6 +316,27 @@ services:
     depends_on:
       panel:
         condition: service_healthy
+    networks:
+      - mc_network
+
+  # ----------------------------------------
+  # GEYSER STANDALONE (Bedrock Proxy)
+  # ----------------------------------------
+  geyser:
+    build: ./geyser
+    container_name: mc_geyser
+    restart: always
+    environment:
+      GEYSER_REMOTE_ADDRESS: "velocity"
+      GEYSER_REMOTE_PORT: "25577"
+      GEYSER_REMOTE_AUTH_TYPE: "floodgate"
+    ports:
+      - "19132:19132/udp"
+    volumes:
+      - ./geyser:/etc/geyser
+      - ./proxy/plugins/floodgate/key.pem:/etc/geyser/key.pem:ro
+    depends_on:
+      - velocity
     networks:
       - mc_network
 
