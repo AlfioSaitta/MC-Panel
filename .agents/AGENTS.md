@@ -56,6 +56,7 @@ Questa documentazione è dedicata a futuri Agenti (AI) per mantenere coerenza ar
 ### J. Architettura Porte Interne Docker
 - **Ottimizzazione RCON e Minecraft:** Tutti i container dei server di backend si trovano nella stessa `mc_network`. Di conseguenza, comunicano tra di loro e con il Web Panel (anch'esso un container) tramite hostname (es. `mc_lobby`, `mc_motoleo`).
 - **Regola:** Non incrementare dinamicamente le porte interne nei container (come `RCON_PORT=25576, 25577` ecc.). Tutti i server devono utilizzare internamente la porta standard `25575` per l'RCON e `25565` per il gioco. Non è più necessario esporre queste porte sull'host (`ports: - "127.0.0.1:2557x:25575"`) poiché il Web Panel contatta i server internamente. Questo semplifica la manutenzione ed evita errori incrociati come gli `ECONNREFUSED`.
+
 ### K. Gestione Disconnessioni Proxy e Plugin Superflui
 - **Sintomo:** LibertyBans generava avvisi di "unrelocated library classes" a causa del plugin `reconnect` (SimpleReconnect) e SkinsRestorer consigliava di rimuovere `ViaVersion` dal proxy.
 - **Soluzione:** Velocity supporta nativamente il reinstradamento dei giocatori in caso di server down o crash configurando `failover-on-unexpected-server-disconnect = true` nel `velocity.toml`. Di conseguenza, `SimpleReconnect` è stato eliminato per sempre. Inoltre, i plugin `ViaVersion` e `ViaBackwards` sono stati spostati dal proxy ai singoli server backend (nella cartella `custom-plugins/` gestita dallo script di deploy) per prevenire conflitti. `deploy.sh` è stato aggiornato per pulire forzatamente questi file `.jar` dal proxy per evitare reintroduzioni accidentali.
@@ -187,15 +188,14 @@ Questa è la mappatura esatta dei container e dei plugin attualmente attivi nell
 | **Citizens** (v2.0.43-SNAPSHOT) | API e sistema NPC (NOTA: download protetto, `Citizens-*.jar` va scaricato manualmente da [https://ci.citizensnpcs.co/job/Citizens2/](https://ci.citizensnpcs.co/job/Citizens2/) e inserito nella cartella `custom-plugins`). |
 | **PlaceholderAPI** (v2.12.3) | Sostitutore di variabili dinamiche (PAPI). |
 | **ProtocolLib** (v5.4.0) | Packet API per modifiche profonde a livello client-server. |
-| **SentientMobs** (v2.3.1) | Sostituisce l'intelligenza artificiale (AI) di default per rendere i mostri strategici. |
-| **Skript** (v2.15.4) & **skript-worldguard** (v1.0.1) | Linguaggio di scripting in-game e integrazioni per le regioni. |
-| **Vault-Updated** (v2.0.0) & **ExcellentEconomy** (v2.8.0) | Interfaccia ed engine del sistema di Economia centralizzata. |
+| **SentientMobs** (v2.3.2.1) | Sostituisce l'intelligenza artificiale (AI) di default per rendere i mostri strategici. |
+| **Skript** (v2.15.4) | Scripting language in pseudo-english. |
+| **Vault-Updated** (v2.0.0) | Provider universale per economia e permessi. |
 | **worldedit** (v7.4.4-beta-01) & **worldguard** (v7.0.17) | Sistemi di building massivo e protezione anti-griefing del territorio. |
 | **zMenu** (v1.1.1.4) | Gestore avanzato di menu grafici con integrazione cross-play (Bedrock Forms) e MiniMessage. |
 | **bluemap-paper** (v5.22) | Rendering della web-map 3D in tempo reale. |
 | **HuskSync** (v4.0.0-ba1d17e) | Sincronizzazione automatica inventari, salute e avanzamenti a database. |
 | **RedisChat** (v5.5.17) | Chat globale unificata tra tutti i mondi. |
-| **ViaBackwards** (v5.10.0) & **ViaVersion** (v5.10.0) | Compatibilità di connessione per client vecchi o futuri. |
 | **TAB-Bridge** (v6.2.2) | Ponte necessario per inviare i Placeholders dal backend a TAB sul Proxy. |
 | **floodgate-bukkit** (v2.2.5-SNAPSHOT) | Backend side of Floodgate for Bedrock compatibility. |
 

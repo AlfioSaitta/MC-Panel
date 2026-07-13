@@ -46,15 +46,16 @@ Il network è pre-configurato con una suite essenziale di plugin moderni, divisi
 | **Citizens** (v2.0.43-SNAPSHOT) | API e sistema NPC (NOTA: download protetto, `Citizens-*.jar` va scaricato manualmente da [https://ci.citizensnpcs.co/job/Citizens2/](https://ci.citizensnpcs.co/job/Citizens2/) e inserito nella cartella `custom-plugins`). |
 | **PlaceholderAPI** (v2.12.3) | Sostitutore di variabili dinamiche (PAPI). |
 | **ProtocolLib** (v5.4.0) | Packet API per modifiche profonde a livello client-server. |
-| **SentientMobs** (v2.3.1) | Sostituisce l'intelligenza artificiale (AI) di default per rendere i mostri strategici. |
-| **Skript** (v2.15.4) & **skript-worldguard** (v1.0.1) | Linguaggio di scripting in-game e integrazioni per le regioni. |
-| **Vault-Updated** (v2.0.0) & **ExcellentEconomy** (v2.8.0) | Interfaccia ed engine del sistema di Economia centralizzata. |
+| **SentientMobs** (v2.3.2.1) | Sostituisce l'intelligenza artificiale (AI) di default per rendere i mostri strategici. |
+| **SimplePortals** (v1.0.4) | Portali per Bungee/Velocity multi-dimensionali con ascia. |
+| **Skript** (v2.15.4) | Scripting language in pseudo-english. |
+| **Vault-Updated** (v2.0.0) | Provider universale per economia e permessi. |
+| **ViaBackwards** (v5.11.0) & **ViaVersion** (v5.11.0) | Compatibilità di connessione per client vecchi o futuri. |
 | **worldedit** (v7.4.4-beta-01) & **worldguard** (v7.0.17) | Sistemi di building massivo e protezione anti-griefing del territorio. |
 | **zMenu** (v1.1.1.4) | Gestore avanzato di menu grafici con integrazione cross-play (Bedrock Forms) e MiniMessage. |
 | **bluemap-paper** (v5.22) | Rendering della web-map 3D in tempo reale. |
 | **HuskSync** (v4.0.0-ba1d17e) | Sincronizzazione automatica inventari, salute e avanzamenti a database. |
 | **RedisChat** (v5.5.17) | Chat globale unificata tra tutti i mondi. |
-| **ViaBackwards** (v5.10.0) & **ViaVersion** (v5.10.0) | Compatibilità di connessione per client vecchi o futuri. |
 | **TAB-Bridge** (v6.2.2) | Ponte necessario per inviare i Placeholders dal backend a TAB sul Proxy. |
 | **floodgate-bukkit** (v2.2.5-SNAPSHOT) | Backend side of Floodgate for Bedrock compatibility. |
 
