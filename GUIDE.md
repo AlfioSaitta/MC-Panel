@@ -206,17 +206,19 @@ Devi selezionare l'angolo in basso a sinistra e l'angolo in alto a destra dello 
 
 **Passo 4: Attiva il teletrasporto verso il Server**
 Ora che l'area è selezionata, scrivi il comando per trasformare quello spazio nel vero e proprio portale di connessione.
-Sintassi: `/portal create <NomeDelPortale> server <ServerDiDestinazione>`
+Sintassi base: `/portal create desti:<ServerDiDestinazione>`
+
+*Opzionale:* Il plugin permette anche di specificare il blocco che riempirà automaticamente il portale aggiungendo `block:<TIPO>`. Ad esempio: `block:WATER`, `block:LAVA` o `block:NETHER_PORTAL`.
 
 **Esempi pratici:**
-- Per fare un portale verso il server Survival: `/portal create PortaleSurvival server survival`
-- Per fare un portale verso il server Creative: `/portal create PortaleCreative server creative`
+- Per fare un portale vuoto verso il server Survival: `/portal create desti:survival`
+- Per fare un portale ad acqua verso il Creative: `/portal create desti:creative block:WATER`
 
 **Fatto! 🎉**
 Prova ad attraversare fisicamente l'area: verrai magicamente e fluidamente trasportato nel server di destinazione senza dover digitare alcun comando aggiuntivo!
 
 **Gestione Emergenze:**
-- Se hai sbagliato a creare il portale o vuoi spostarlo, eliminalo semplicemente con: `/portal remove <NomeDelPortale>`
+- Se hai sbagliato a creare il portale, selezionalo di nuovo o guardalo e rimuovilo con: `/portal remove`
 - Per visualizzare le aree dei portali esistenti vicino a te: `/portal show`
 
 ---
