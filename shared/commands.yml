@@ -11,7 +11,7 @@ aliases:
   pay:
   - excellenteconomy:pay $$1-
   eco:
-  - excellenteconomy:eco $$1-
+  - excellenteconomy:excellenteconomy $$1-
   baltop:
   - excellenteconomy:baltop $$1-
   home:
@@ -51,6 +51,6 @@ aliases:
   unbanip:
   - libertybans:unbanip $$1-
   tempban:
-  - libertybans:tempban $$1-
+  - libertybans:ban $$1-
   tempmute:
-  - libertybans:tempmute $$1-
+  - libertybans:mute $$1-
