@@ -187,38 +187,39 @@ flowchart LR
 ### 🌀 Come Creare un Portale Fisico (Guida Passo-Passo)
 
 Vuoi creare un bellissimo portale (ad esempio con l'acqua o particelle) che trasporti automaticamente i giocatori in un altro server del network (es. dalla Lobby al Survival)? 
-Segui questi semplici passi! Usiamo il plugin **SimplePortals**.
+Segui questi semplici passi! Usiamo il plugin **SimplePortals**, che condivide le destinazioni su tutto il network tramite database.
 
-**Passo 1: Costruisci la struttura visiva**
-Costruisci la "cornice" del tuo portale usando i blocchi che preferisci (es. Ossidiana, Quarzo, Vetro). Lascia vuoto lo spazio al centro dove i giocatori dovranno camminare. Se vuoi, puoi riempire lo spazio interno con acqua, lava o ragnatele: il portale funzionerà ugualmente!
+**Passo 1: Crea il punto di Arrivo (Destinazione)**
+1. Entra nel server di destinazione (es. server `motoleo` o `survival`).
+2. Posizionati esattamente nel punto esatto in cui vuoi che i giocatori atterrino.
+3. Digita il comando: `/portal destination create <NomeDestinazione>` (es. `/portal destination create motoleo`).
+*Essendo il database condiviso, ora tutti i server sanno dove si trova questa destinazione!*
 
-**Passo 2: Prendi lo strumento magico (Wand) del plugin**
-Scrivi in chat il comando:
-`/portal wand`
-Riceverai uno strumento speciale dedicato ai portali. Serve per selezionare l'area invisibile che fungerà da innesco.
+**Passo 2: Costruisci la struttura visiva alla Partenza**
+Torna nel server di partenza (es. `lobby`). Costruisci la "cornice" del tuo portale usando i blocchi che preferisci (es. Ossidiana, Quarzo). Lascia vuoto lo spazio al centro dove i giocatori dovranno camminare.
 
 **Passo 3: Seleziona l'area magica di ingresso**
-Devi selezionare l'angolo in basso a sinistra e l'angolo in alto a destra dello spazio "vuoto" del tuo portale (esattamente lo spazio volumetrico in cui il giocatore passerà):
-1. Guarda il blocco del **primo angolo** (es. in basso a sinistra) e fai **Click Sinistro** con lo strumento.
-2. Guarda il blocco dell'**angolo opposto** (es. in alto a destra, nella profondità opposta) e fai **Click Destro** con lo strumento.
+1. Prendi lo strumento magico digitando: `/portal wand`
+2. Guarda il blocco del **primo angolo** in basso a sinistra e fai **Click Sinistro** con lo strumento.
+3. Guarda il blocco dell'**angolo opposto** in alto a destra e fai **Click Destro**.
+*(Hai appena creato un cubo invisibile che fa da sensore per il tuo portale).*
 
-*(Nota: Hai appena creato un parallelepipedo invisibile che fa da sensore per il tuo portale).*
+**Passo 4: Collega il portale alla Destinazione**
+Ora che l'area è selezionata, scrivi il comando per trasformare quello spazio nel vero e proprio portale.
+Sintassi base: `/portal create desti:<NomeDestinazione>`
 
-**Passo 4: Attiva il teletrasporto verso il Server**
-Ora che l'area è selezionata, scrivi il comando per trasformare quello spazio nel vero e proprio portale di connessione.
-Sintassi base: `/portal create desti:<ServerDiDestinazione>`
-
-*Opzionale:* Il plugin permette anche di specificare il blocco che riempirà automaticamente il portale aggiungendo `block:<TIPO>`. Ad esempio: `block:WATER`, `block:LAVA` o `block:NETHER_PORTAL`.
+*Opzionale:* Il plugin permette di riempire visivamente e automaticamente il portale aggiungendo `block:<TIPO>`. Ad esempio: `block:WATER`, `block:LAVA` o `block:NETHER_PORTAL`.
 
 **Esempi pratici:**
-- Per fare un portale vuoto verso il server Survival: `/portal create desti:survival`
-- Per fare un portale ad acqua verso il Creative: `/portal create desti:creative block:WATER`
+- Per fare un portale vuoto verso la destinazione creata prima: `/portal create desti:motoleo`
+- Per fare un portale ad acqua verso il survival: `/portal create desti:survival block:WATER`
 
 **Fatto! 🎉**
-Prova ad attraversare fisicamente l'area: verrai magicamente e fluidamente trasportato nel server di destinazione senza dover digitare alcun comando aggiuntivo!
+Prova ad attraversare fisicamente l'area: verrai magicamente trasportato al punto esatto configurato!
 
 **Gestione Emergenze:**
-- Se hai sbagliato a creare il portale, selezionalo di nuovo o guardalo e rimuovilo con: `/portal remove`
+- Per eliminare una destinazione vecchia: `/portal destination remove <NomeDestinazione>`
+- Se hai sbagliato a creare un portale, selezionalo di nuovo o guardalo e digita: `/portal remove`
 - Per visualizzare le aree dei portali esistenti vicino a te: `/portal show`
 
 ---
