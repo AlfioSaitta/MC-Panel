@@ -184,14 +184,40 @@ flowchart LR
 | `/tpaccept` | 👤 Giocatore | Accetta la richiesta TPA. |
 | `/tp <giocatore>` | 👑 Admin | Teletrasporto silenzioso bypassando le richieste. |
 
-### Portali Fisici (SimplePortals)
+### 🌀 Come Creare un Portale Fisico (Guida Passo-Passo)
 
-> [!NOTE]
-> Per costruire i portali dimensionali, utilizza l'ascia magica di WorldEdit (`//wand`).
+Vuoi creare un bellissimo portale (ad esempio con l'acqua o particelle) che trasporti automaticamente i giocatori in un altro server del network (es. dalla Lobby al Survival)? 
+Segui questi semplici passi! Usiamo il plugin **SimplePortals**.
 
-1. Seleziona l'area del portale.
-2. Esegui: `/portals create <nomeportale> <nomedestinazione>`.
-3. Attraversare il portale ti scaglierà direttamente nel server indicato in modo fluido.
+**Passo 1: Costruisci la struttura visiva**
+Costruisci la "cornice" del tuo portale usando i blocchi che preferisci (es. Ossidiana, Quarzo, Vetro). Lascia vuoto lo spazio al centro dove i giocatori dovranno camminare. Se vuoi, puoi riempire lo spazio interno con acqua, lava o ragnatele: il portale funzionerà ugualmente!
+
+**Passo 2: Prendi lo strumento magico (Wand) del plugin**
+Scrivi in chat il comando:
+`/portal wand`
+Riceverai uno strumento speciale dedicato ai portali. Serve per selezionare l'area invisibile che fungerà da innesco.
+
+**Passo 3: Seleziona l'area magica di ingresso**
+Devi selezionare l'angolo in basso a sinistra e l'angolo in alto a destra dello spazio "vuoto" del tuo portale (esattamente lo spazio volumetrico in cui il giocatore passerà):
+1. Guarda il blocco del **primo angolo** (es. in basso a sinistra) e fai **Click Sinistro** con lo strumento.
+2. Guarda il blocco dell'**angolo opposto** (es. in alto a destra, nella profondità opposta) e fai **Click Destro** con lo strumento.
+
+*(Nota: Hai appena creato un parallelepipedo invisibile che fa da sensore per il tuo portale).*
+
+**Passo 4: Attiva il teletrasporto verso il Server**
+Ora che l'area è selezionata, scrivi il comando per trasformare quello spazio nel vero e proprio portale di connessione.
+Sintassi: `/portal create <NomeDelPortale> server <ServerDiDestinazione>`
+
+**Esempi pratici:**
+- Per fare un portale verso il server Survival: `/portal create PortaleSurvival server survival`
+- Per fare un portale verso il server Creative: `/portal create PortaleCreative server creative`
+
+**Fatto! 🎉**
+Prova ad attraversare fisicamente l'area: verrai magicamente e fluidamente trasportato nel server di destinazione senza dover digitare alcun comando aggiuntivo!
+
+**Gestione Emergenze:**
+- Se hai sbagliato a creare il portale o vuoi spostarlo, eliminalo semplicemente con: `/portal remove <NomeDelPortale>`
+- Per visualizzare le aree dei portali esistenti vicino a te: `/portal show`
 
 ---
 
